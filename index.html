@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Code Chatroom</title>
+  <title>PVT. CHAT With CODE</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
@@ -78,14 +78,14 @@
 }
 
 .message.other {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgb(81, 141, 224);
   align-self: flex-start;
   border-bottom-left-radius: 4px;
 }
 
 .message.me {
   background: var(--me-gradient);
-  color: #fff;
+  color: #f2e30a;
   align-self: flex-end;
   border-bottom-right-radius: 4px;
 }
@@ -117,7 +117,7 @@
 <body>
   <div class="container">
     <header>
-      <h1>Code Chatroom</h1>
+      <h1>>>>ChatRoom<<<</h1>
       <button id="instructions-btn">Instructions</button>
     </header>
     <div id="instructions">
@@ -139,10 +139,14 @@
     </div>
 
     <!-- Room header -->
-    <div class="room-header" id="room-display" style="display:none;">
-      <span id="room-code-text"></span>
-      <button id="download-btn" style="display:none;">Download Chat</button>
-    </div>
+   <div class="room-header" id="room-display" style="display:none;">
+  <span id="room-code-text"></span>
+  <button id="download-btn" style="display:none;">Download Chat</button>
+  <button id="clear-btn">Clear Chat</button> <!-- Clear Chat button -->
+  <button id="leave-btn">Quit Chat</button>
+</div>
+
+
 
     <!-- Messages -->
     <div id="messages"></div>
@@ -157,8 +161,8 @@
 
   <!-- Firebase -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-    import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+   import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
 
     // 🔑 Firebase Config
     const firebaseConfig = {
@@ -188,6 +192,8 @@
     const sendBtn=document.getElementById("send-btn");
     const instrBtn=document.getElementById("instructions-btn");
     const instructions=document.getElementById("instructions");
+    const leaveBtn = document.getElementById("leave-btn");
+    const clearBtn = document.getElementById("clear-btn");
 
     let activeRoom=null;
     let nickname=null;
@@ -205,7 +211,7 @@
 
   const time = data.createdAt ? new Date(data.createdAt).toLocaleString() : "";
 
-  msg.innerHTML = `<span class="meta">${data.name || "Anon"} · ${time}</span><br>${data.text}`;
+  msg.innerHTML = `<span class="meta">${data.name || "Anon"} · ${time}</span><br> >>> ${data.text}`;
 
   messagesEl.appendChild(msg);
   messagesEl.scrollTop = messagesEl.scrollHeight;
@@ -213,26 +219,42 @@
 
 
     // Join room
-    function joinRoom(room){
-      activeRoom=room;
-      nickname=nameInput.value.trim()||"USER";
-      messagesEl.innerHTML="";
-      setup.style.display="none";
-      roomDisplay.style.display="flex";
-      roomCodeText.innerHTML=`Room code: <span>${activeRoom}</span>`;
-      downloadBtn.style.display="inline-block";
-      msgInput.disabled=false;
-      sendBtn.disabled=false;
+    function joinRoom(room) {
+  activeRoom = room;
+  nickname = nameInput.value.trim() || "USER";
 
-      const messagesRef = ref(db, `messages/${activeRoom}`);
-      onChildAdded(messagesRef, (snapshot)=>renderMessage(snapshot.val()));
-    }
+  // Save session
+  localStorage.setItem("chatroom", activeRoom);
+  localStorage.setItem("nickname", nickname);
+
+  messagesEl.innerHTML = "";
+  setup.style.display = "none";
+  roomDisplay.style.display = "flex";
+  roomCodeText.innerHTML = `Room code: <span>${activeRoom}</span>`;
+  downloadBtn.style.display = "inline-block";
+  msgInput.disabled = false;
+  sendBtn.disabled = false;
+
+  const messagesRef = ref(db, `messages/${activeRoom}`);
+  onChildAdded(messagesRef, (snapshot) => renderMessage(snapshot.val()));
+}
+
 
     joinBtn.onclick=()=>{ if(roomInput.value.trim()) joinRoom(roomInput.value.trim()); };
     genBtn.onclick=()=>{
       const code=Math.random().toString(36).substring(2,8).toUpperCase();
       roomInput.value=code; joinRoom(code);
     };
+// Restore session if exists
+window.addEventListener("load", () => {
+  const savedRoom = localStorage.getItem("chatroom");
+  const savedName = localStorage.getItem("nickname");
+  if (savedRoom && savedName) {
+    roomInput.value = savedRoom;
+    nameInput.value = savedName;
+    joinRoom(savedRoom);
+  }
+});
 
    // Send text message
 sendBtn.onclick = async () => {
@@ -269,6 +291,28 @@ msgInput.addEventListener("keydown", e => {
       link.download=`chatroom-${activeRoom}.txt`;
       link.click();
     };
+    // Clear chat
+      clearBtn.onclick = async () => {
+      if (!activeRoom) return;
+      if (confirm("Are you sure you want to clear all messages in this room?")) {
+      const messagesRef = ref(db, `messages/${activeRoom}`);
+      await remove(messagesRef); // Make sure 'remove' is imported from Firebase
+      messagesEl.innerHTML = ""; // Clear UI
+  }
+};
+    // Quit chatroom
+      leaveBtn.onclick = () => {
+      localStorage.removeItem("chatroom");
+      localStorage.removeItem("nickname");
+      activeRoom = null;
+      nickname = null;
+      messagesEl.innerHTML = "";
+      setup.style.display = "flex";
+      roomDisplay.style.display = "none";
+      msgInput.disabled = true;
+      sendBtn.disabled = true;
+    };
   </script>
+  
 </body>
 </html>
