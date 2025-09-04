@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>PVT. CHAT With CODE</title>
+  <title>>>>ChatRoom<<<</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
@@ -19,23 +19,74 @@
     body,html{margin:0;height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:#f1f5f9;}
     .container{display:flex;flex-direction:column;height:100vh;}
 
-    /* Header */
-    header{
-      background:linear-gradient(135deg,#1e1b4b,#1e3a8a);
-      padding:14px 16px;
-      display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
-      box-shadow:0 2px 10px rgba(0,0,0,0.5);
-    }
-    header h1{
-      margin:0;font-size:1.2em;font-weight:700;
-      background:linear-gradient(135deg,var(--accent1),var(--accent2));
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-    }
-    header button{
-      border:none;padding:8px 14px;border-radius:6px;
-      background:linear-gradient(135deg,var(--accent1),var(--accent2));
-      color:#fff;font-weight:600;cursor:pointer;margin-top:4px;
-    }
+   header {
+  background: linear-gradient(135deg,#e4e0e4);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  box-shadow: 0 2px 10px rgba(7, 7, 227, 0.5);
+}
+
+/* Logo */
+.chat-logo {
+  width: 55px;
+  height: 55px;
+  margin-right:0px;
+}
+
+/* Chatroom name link */
+.chatroom-link {
+  font-size: 1.2em;
+  font-weight: 700;
+  text-decoration: none;
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+  padding-bottom: 4px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+/* Animated underline */
+.chatroom-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(135deg, var(--accent2), var(--accent1));
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+.chatroom-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Hover effect: slightly enlarge and shadow */
+.chatroom-link:hover {
+  transform: scale(1.05);
+  text-shadow: 0 0 6px rgba(255,255,255,0.6);
+}
+
+
+/* Adjust buttons */
+header button {
+  border:none;
+  padding:8px 14px;
+  border-radius:6px;
+  background:linear-gradient(135deg,var(--accent1),var(--accent2));
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  margin-top:4px;
+}
 
     /* Instructions */
     #instructions{
@@ -48,7 +99,7 @@
 
     /* Setup */
     .setup{
-      padding:12px;background:linear-gradient(135deg,#1e1b4b,#1e3a8a);
+      padding:12px;background:linear-gradient(135deg,#1e1b4b,#cccfd6);
       display:flex;gap:8px;flex-wrap:wrap;
     }
     .setup input{
@@ -84,7 +135,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background: radial-gradient(circle at top, #0f172a, #020617);
+  background: radial-gradient(#3222a4);
   scroll-behavior: smooth; /* smooth scroll on new messages */
 }
 
@@ -157,9 +208,14 @@
 <body>
 <div class="container">
   <header>
-    <h1>>>>ChatRoom<<<</h1>
-    <button id="instructions-btn">Instructions</button>
-  </header>
+  <!-- Logo -->
+  <img src="UNI01.png" alt="Chat Logo" class="chat-logo">
+  <!-- Chatroom Name as Link -->
+<a href="https://hematics43.github.io/Code-Chatroom/" id="chatroom-link" class="chatroom-link">>>>ChatRoom<<<</a>
+  <!-- Instructions Button -->
+  <button id="instructions-btn">Instructions</button>
+</header>
+
 
   <div id="instructions">
     <p><strong>How to use:</strong></p>
@@ -246,7 +302,7 @@ function renderMessage(data) {
   const msg = document.createElement("p");
   msg.className = "message " + (data.name === nickname ? "me" : "other");
   const time = data.createdAt ? new Date(data.createdAt).toLocaleString() : "";
-  msg.innerHTML = `<span class="meta">${data.name || "Anon"} · ${time}</span><br> >>> ${data.text}`;
+  msg.innerHTML = `<span class="meta">${data.name || "Anon"} · ${time}</span><br> >>${data.text}<<`;
   messagesEl.appendChild(msg);
 
   // Auto-scroll to bottom
