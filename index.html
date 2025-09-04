@@ -295,20 +295,25 @@ header button {
 
 
 
-  <div id="instructions">
-    <p><strong>How to use:</strong></p>
-    <ol>
-      <li>Enter a <b>Room Code</b> and your <b>Nickname</b>, then press <b>Join</b>.</li>
-      <li>Or click <b>Generate Room</b> to create a new code.</li>
-      <li>Share the code with friends to join the same chat.</li>
-      <li>You can send text messages, download chat, or clear chat.</li>
-    </ol>
-  </div>
+ <div id="instructions">
+  <h2>📖 How to Use ChatRoom</h2>
+  <ol>
+    <li>🔑 Enter a <b>Room Code</b> and your <b>Nickname</b>, then press <b>Join</b>.</li>
+    <li>🎲 Or click <b>Generate Room</b> to instantly create a new unique code.</li>
+    <li>🤝 Share the room code with your friends so they can join the same chat.</li>
+    <li>💬 Start chatting! Messages you send appear on the right, and others on the left.</li>
+    <li>📥 Use the <b>Download Chat</b> button to save the conversation.</li>
+    <li>🧹 Use the <b>Clear Chat</b> button to remove all messages from the room.</li>
+    <li>🚪 Click <b>Quit Chat</b> to leave the room safely.</li>
+  </ol>
+  <p class="note">⚠️ Note: Rooms are always active. If everyone leaves, the chat history will be in room.</p>
+</div>
+
 
   <!-- Setup -->
   <div class="setup" id="setup">
-    <input id="room-input" type="text" placeholder="Room code"/>
-    <input id="name-input" type="text" placeholder="Your nickname"/>
+    <input id="room-input" type="text" placeholder="Room Code"/>
+    <input id="name-input" type="text" placeholder="Nickname"/>
     <button id="join-btn">Join</button>
     <button id="gen-btn">Generate Room</button>
   </div>
@@ -317,8 +322,8 @@ header button {
   <div class="room-header" id="room-display" style="display:none;">
     <span id="room-code-text"></span>
     <button id="download-btn" style="display:none;">Download Chat</button>
-    <button id="clear-btn">Clear Chat</button>
-    <button id="leave-btn">Quit Chat</button>
+    <button id="clear-btn">Clear</button>
+    <button id="leave-btn">Exit</button>
   </div>
 
   <!-- Messages -->
@@ -398,7 +403,7 @@ function joinRoom(room) {
   messagesEl.innerHTML = "";
   setup.style.display = "none";
   roomDisplay.style.display = "flex";
-  roomCodeText.innerHTML = `Room code: <span>${activeRoom}</span>`;
+  roomCodeText.innerHTML = `Room Code: <span>${activeRoom}</span>`;
   downloadBtn.style.display = "inline-block";
   msgInput.disabled = false;
   sendBtn.disabled = false;
