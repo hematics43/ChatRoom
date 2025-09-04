@@ -20,7 +20,7 @@
     .container{display:flex;flex-direction:column;height:100vh;}
 
    header {
-  background: linear-gradient(135deg,#be2dbe);
+  background: linear-gradient(#be2dbe);
   padding: 10px 16px;
   display: flex;
   align-items: center;
@@ -189,10 +189,10 @@ header button {
       font-size:16px;
     }
     .composer button{
-      padding:0 16px;border:none;border-radius:24px;
+      padding:6px;border:none;border-radius:24px;
       background:linear-gradient(135deg,var(--accent1),var(--accent2));
-      color:#fff;font-weight:600;cursor:pointer;
-      min-width:80px;
+      color:#0d0000;font-weight:6;cursor:pointer;
+      min-width:15%;
     }
 
     /* Responsive tweaks */
@@ -209,7 +209,7 @@ header button {
   align-items: center;
   justify-content: space-between; /* Push logo left, button right */
   padding: 10px 16px;
-  background: linear-gradient(#1e3a8a);
+  background: linear-gradient(#263f75);
   box-shadow: 0 2px 10px rgba(0,0,0,0.5);
   flex-wrap: wrap; /* Wrap on very small screens */
   gap: 10px;
@@ -326,7 +326,7 @@ header button {
   <!-- Composer -->
   <div class="composer">
     <textarea id="msg-input" placeholder="Type a message..." disabled></textarea>
-    <button id="send-btn" disabled>>>></button>
+    <button id="send-btn" disabled>➤➤➤</button>
   </div>
 </div>
 
