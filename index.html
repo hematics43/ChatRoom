@@ -14,212 +14,244 @@
       --accent2:#3b82f6;
       --me-gradient:linear-gradient(135deg,#6366f1,#3b82f6);
     }
+
     *{box-sizing:border-box;}
     body,html{margin:0;height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:#f1f5f9;}
     .container{display:flex;flex-direction:column;height:100vh;}
 
     /* Header */
-    header{background:linear-gradient(135deg,#1e1b4b,#1e3a8a);padding:14px 16px;
-      display:flex;align-items:center;justify-content:space-between;
-      box-shadow:0 2px 10px rgba(0,0,0,0.5);}
-    header h1{margin:0;font-size:1.2em;font-weight:700;
+    header{
+      background:linear-gradient(135deg,#1e1b4b,#1e3a8a);
+      padding:14px 16px;
+      display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;
+      box-shadow:0 2px 10px rgba(0,0,0,0.5);
+    }
+    header h1{
+      margin:0;font-size:1.2em;font-weight:700;
       background:linear-gradient(135deg,var(--accent1),var(--accent2));
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-    header button{border:none;padding:8px 14px;border-radius:6px;
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    }
+    header button{
+      border:none;padding:8px 14px;border-radius:6px;
       background:linear-gradient(135deg,var(--accent1),var(--accent2));
-      color:#fff;font-weight:600;cursor:pointer;}
+      color:#fff;font-weight:600;cursor:pointer;margin-top:4px;
+    }
 
     /* Instructions */
-    #instructions{max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s ease;
-      padding:0 12px;background:rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.1);}
+    #instructions{
+      max-height:0;overflow:hidden;
+      transition:max-height 0.4s ease,padding 0.3s ease;
+      padding:0 12px;background:rgba(255,255,255,0.06);
+      border-bottom:1px solid rgba(255,255,255,0.1);
+    }
     #instructions.open{max-height:300px;padding:12px;font-size:0.9em;line-height:1.5;}
 
     /* Setup */
-    .setup{padding:12px;background:linear-gradient(135deg,#1e1b4b,#1e3a8a);
-      display:flex;gap:8px;flex-wrap:wrap;}
-    .setup input{flex:1;min-width:120px;padding:10px 14px;border-radius:8px;border:none;
-      background:rgba(255,255,255,0.1);color:#fff;}
+    .setup{
+      padding:12px;background:linear-gradient(135deg,#1e1b4b,#1e3a8a);
+      display:flex;gap:8px;flex-wrap:wrap;
+    }
+    .setup input{
+      flex:1;min-width:120px;padding:10px 14px;border-radius:8px;border:none;
+      background:rgba(255,255,255,0.1);color:#fff;
+    }
     .setup input::placeholder{color:#cbd5e1;}
-    .setup button{padding:10px 16px;border:none;border-radius:8px;
+    .setup button{
+      padding:10px 16px;border:none;border-radius:8px;
       background:linear-gradient(135deg,var(--accent1),var(--accent2));
-      color:#fff;font-weight:600;cursor:pointer;}
+      color:#fff;font-weight:600;cursor:pointer;
+    }
 
     /* Room header */
-    .room-header{padding:14px;text-align:center;font-weight:600;
-      background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;gap:12px;}
+    .room-header{
+      padding:14px;text-align:center;font-weight:600;
+      background:rgba(255,255,255,0.05);
+      display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;
+      overflow-x:auto;
+    }
     .room-header span{color:var(--accent2);font-weight:700;}
-    .room-header button{border:none;padding:6px 12px;border-radius:6px;
-      background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#fff;cursor:pointer;}
+    .room-header button{
+      border:none;padding:6px 12px;border-radius:6px;
+      background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#fff;
+      cursor:pointer;white-space:nowrap;
+    }
 
+    /* Messages */
     #messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  background: radial-gradient(circle at top, #0f172a, #020617);
-}
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: radial-gradient(circle at top, #0f172a, #020617);
+    }
 
-.message {
-  max-width: 70%;
-  padding: 12px 16px;
-  border-radius: 16px;
-  line-height: 1.5;
-  word-wrap: break-word;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-}
+    .message {
+      max-width: 70%;
+      padding: 12px 16px;
+      border-radius: 16px;
+      line-height: 1.5;
+      word-wrap: break-word;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      font-size: 16px;
+    }
 
-.message .meta {
-  font-size: 12px;
-  color: var(--muted);
-  margin-bottom: 4px;
-}
+    .message .meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
 
-.message.other {
-  background: rgb(81, 141, 224);
-  align-self: flex-start;
-  border-bottom-left-radius: 4px;
-}
+    .message.other {
+      background: rgb(81, 141, 224);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
 
-.message.me {
-  background: var(--me-gradient);
-  color: #f2e30a;
-  align-self: flex-end;
-  border-bottom-right-radius: 4px;
-}
-
-    @media(max-width:600px){.msg{max-width:85%;font-size:15px;}}
+    .message.me {
+      background: var(--me-gradient);
+      color: #f2e30a;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
 
     /* Composer */
-    .composer{display:flex;gap:8px;padding:12px;background:rgba(30,30,60,0.6);}
-    .composer input[type=text]{flex:1;padding:12px 16px;border-radius:24px;border:none;
-      background:rgba(255,255,255,0.1);color:#fff;}
-    .composer button{padding:0 16px;border:none;border-radius:24px;
-      background:linear-gradient(135deg,var(--accent1),var(--accent2));color:#fff;font-weight:600;cursor:pointer;}
- .composer textarea {
-  flex: 1;
-  padding: 12px 16px;
-  border-radius: 16px;
-  border: none;
-  resize: none;
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  min-height: 40px;
-  max-height: 200px;
-  overflow-y: auto;
-  font-family: inherit;
-}
+    .composer{
+      display:flex;gap:8px;padding:12px;background:rgba(30,30,60,0.6);
+      flex-wrap:wrap;
+    }
+    .composer textarea{
+      flex:1;
+      padding:12px 16px;
+      border-radius:16px;
+      border:none;
+      resize:none;
+      background:rgba(255,255,255,0.1);
+      color:#fff;
+      min-height:40px;
+      max-height:150px;
+      overflow-y:auto;
+      font-family:inherit;
+      font-size:16px;
+    }
+    .composer button{
+      padding:0 16px;border:none;border-radius:24px;
+      background:linear-gradient(135deg,var(--accent1),var(--accent2));
+      color:#fff;font-weight:600;cursor:pointer;
+      min-width:80px;
+    }
+
+    /* Responsive tweaks */
+    @media(max-width:600px){
+      .message{max-width:85%;font-size:15px;}
+      .setup input, .setup button{flex:1 1 100%; margin-bottom:6px;}
+      .composer textarea{min-height:50px;}
+      header h1{font-size:1em;}
+    }
 
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>>>>ChatRoom<<<</h1>
-      <button id="instructions-btn">Instructions</button>
-    </header>
-    <div id="instructions">
-      <p><strong>How to use:</strong></p>
-      <ol>
-        <li>Enter a <b>Room Code</b> and your <b>Nickname</b>, then press <b>Join</b>.</li>
-        <li>Or click <b>Generate Room</b> to create a new code.</li>
-        <li>Share the code with friends to join the same chat.</li>
-        <li>You can send text messages and download chat history.</li>
-      </ol>
-    </div>
+<div class="container">
+  <header>
+    <h1>>>>ChatRoom<<<</h1>
+    <button id="instructions-btn">Instructions</button>
+  </header>
 
-    <!-- Setup -->
-    <div class="setup" id="setup">
-      <input id="room-input" type="text" placeholder="Room code"/>
-      <input id="name-input" type="text" placeholder="Your nickname"/>
-      <button id="join-btn">Join</button>
-      <button id="gen-btn">Generate Room</button>
-    </div>
-
-    <!-- Room header -->
-   <div class="room-header" id="room-display" style="display:none;">
-  <span id="room-code-text"></span>
-  <button id="download-btn" style="display:none;">Download Chat</button>
-  <button id="clear-btn">Clear Chat</button> <!-- Clear Chat button -->
-  <button id="leave-btn">Quit Chat</button>
-</div>
-
-
-
-    <!-- Messages -->
-    <div id="messages"></div>
-
-   <!-- Composer -->
-<div class="composer">
-  <textarea id="msg-input" placeholder="Type a message..." disabled></textarea>
-  <button id="send-btn" disabled>Send</button>
-</div>
-
+  <div id="instructions">
+    <p><strong>How to use:</strong></p>
+    <ol>
+      <li>Enter a <b>Room Code</b> and your <b>Nickname</b>, then press <b>Join</b>.</li>
+      <li>Or click <b>Generate Room</b> to create a new code.</li>
+      <li>Share the code with friends to join the same chat.</li>
+      <li>You can send text messages, download chat, or clear chat.</li>
+    </ol>
   </div>
 
-  <!-- Firebase -->
-  <script type="module">
-   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-   import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+  <!-- Setup -->
+  <div class="setup" id="setup">
+    <input id="room-input" type="text" placeholder="Room code"/>
+    <input id="name-input" type="text" placeholder="Your nickname"/>
+    <button id="join-btn">Join</button>
+    <button id="gen-btn">Generate Room</button>
+  </div>
 
-    // 🔑 Firebase Config
-    const firebaseConfig = {
-      apiKey: "AIzaSyAKUkKJLa1XSV4NwjFBrG2M2g3ObkE5CbI",
-      authDomain: "code-chatroom.firebaseapp.com",
-      projectId: "code-chatroom",
-      storageBucket: "code-chatroom.appspot.com",
-      messagingSenderId: "207673617291",
-      appId: "1:207673617291:web:d25bfef5658e6504acdd8e",
-      databaseURL: "https://code-chatroom-default-rtdb.asia-southeast1.firebasedatabase.app/"
-    };
+  <!-- Room header -->
+  <div class="room-header" id="room-display" style="display:none;">
+    <span id="room-code-text"></span>
+    <button id="download-btn" style="display:none;">Download Chat</button>
+    <button id="clear-btn">Clear Chat</button>
+    <button id="leave-btn">Quit Chat</button>
+  </div>
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+  <!-- Messages -->
+  <div id="messages"></div>
 
-    // Elements
-    const setup=document.getElementById("setup");
-    const roomInput=document.getElementById("room-input");
-    const nameInput=document.getElementById("name-input");
-    const joinBtn=document.getElementById("join-btn");
-    const genBtn=document.getElementById("gen-btn");
-    const roomDisplay=document.getElementById("room-display");
-    const roomCodeText=document.getElementById("room-code-text");
-    const downloadBtn=document.getElementById("download-btn");
-    const messagesEl=document.getElementById("messages");
-    const msgInput=document.getElementById("msg-input");
-    const sendBtn=document.getElementById("send-btn");
-    const instrBtn=document.getElementById("instructions-btn");
-    const instructions=document.getElementById("instructions");
-    const leaveBtn = document.getElementById("leave-btn");
-    const clearBtn = document.getElementById("clear-btn");
+  <!-- Composer -->
+  <div class="composer">
+    <textarea id="msg-input" placeholder="Type a message..." disabled></textarea>
+    <button id="send-btn" disabled>Send</button>
+  </div>
+</div>
 
-    let activeRoom=null;
-    let nickname=null;
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
 
-    // Toggle instructions
-    instrBtn.onclick=()=>{
-      instructions.classList.toggle("open");
-      instrBtn.textContent = instructions.classList.contains("open") ? "Hide Instructions" : "Instructions";
-    };
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyAKUkKJLa1XSV4NwjFBrG2M2g3ObkE5CbI",
+  authDomain: "code-chatroom.firebaseapp.com",
+  projectId: "code-chatroom",
+  storageBucket: "code-chatroom.appspot.com",
+  messagingSenderId: "207673617291",
+  appId: "1:207673617291:web:d25bfef5658e6504acdd8e",
+  databaseURL: "https://code-chatroom-default-rtdb.asia-southeast1.firebasedatabase.app/"
+};
 
-    // Render message
-   function renderMessage(data) {
-  const msg = document.createElement("p"); // ✅ no <div>
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// Elements
+const setup=document.getElementById("setup");
+const roomInput=document.getElementById("room-input");
+const nameInput=document.getElementById("name-input");
+const joinBtn=document.getElementById("join-btn");
+const genBtn=document.getElementById("gen-btn");
+const roomDisplay=document.getElementById("room-display");
+const roomCodeText=document.getElementById("room-code-text");
+const downloadBtn=document.getElementById("download-btn");
+const messagesEl=document.getElementById("messages");
+const msgInput=document.getElementById("msg-input");
+const sendBtn=document.getElementById("send-btn");
+const instrBtn=document.getElementById("instructions-btn");
+const instructions=document.getElementById("instructions");
+const leaveBtn = document.getElementById("leave-btn");
+const clearBtn = document.getElementById("clear-btn");
+
+let activeRoom=null;
+let nickname=null;
+
+// Toggle instructions
+instrBtn.onclick=()=>{
+  instructions.classList.toggle("open");
+  instrBtn.textContent = instructions.classList.contains("open") ? "Hide Instructions" : "Instructions";
+};
+
+// Render message
+function renderMessage(data) {
+  const msg = document.createElement("p");
   msg.className = "message " + (data.name === nickname ? "me" : "other");
-
   const time = data.createdAt ? new Date(data.createdAt).toLocaleString() : "";
-
   msg.innerHTML = `<span class="meta">${data.name || "Anon"} · ${time}</span><br> >>> ${data.text}`;
-
   messagesEl.appendChild(msg);
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
-
-    // Join room
-    function joinRoom(room) {
+// Join room
+function joinRoom(room) {
   activeRoom = room;
   nickname = nameInput.value.trim() || "USER";
 
@@ -239,12 +271,12 @@
   onChildAdded(messagesRef, (snapshot) => renderMessage(snapshot.val()));
 }
 
+joinBtn.onclick=()=>{ if(roomInput.value.trim()) joinRoom(roomInput.value.trim()); };
+genBtn.onclick=()=>{
+  const code=Math.random().toString(36).substring(2,8).toUpperCase();
+  roomInput.value=code; joinRoom(code);
+};
 
-    joinBtn.onclick=()=>{ if(roomInput.value.trim()) joinRoom(roomInput.value.trim()); };
-    genBtn.onclick=()=>{
-      const code=Math.random().toString(36).substring(2,8).toUpperCase();
-      roomInput.value=code; joinRoom(code);
-    };
 // Restore session if exists
 window.addEventListener("load", () => {
   const savedRoom = localStorage.getItem("chatroom");
@@ -256,7 +288,7 @@ window.addEventListener("load", () => {
   }
 });
 
-   // Send text message
+// Send message
 sendBtn.onclick = async () => {
   if (!msgInput.value.trim()) return;
   const messagesRef = ref(db, `messages/${activeRoom}`);
@@ -269,7 +301,7 @@ sendBtn.onclick = async () => {
   msgInput.value = "";
 };
 
-// Enter = send, Shift+Enter = new line
+// Enter = send
 msgInput.addEventListener("keydown", e => {
   if (e.key === "Enter" && !e.shiftKey) {
     e.preventDefault();
@@ -277,42 +309,43 @@ msgInput.addEventListener("keydown", e => {
   }
 });
 
-    // Download chat
-    downloadBtn.onclick=()=>{
-      let chatText=`Chatroom: ${activeRoom}\n====================\n\n`;
-      messagesEl.querySelectorAll(".msg").forEach(msg=>{
-        const meta=msg.querySelector(".meta")?.textContent||"";
-        const text=msg.innerText.replace(meta,"").trim();
-        chatText+=`${meta}\n${text}\n\n`;
-      });
-      const blob=new Blob([chatText],{type:"text/plain"});
-      const link=document.createElement("a");
-      link.href=URL.createObjectURL(blob);
-      link.download=`chatroom-${activeRoom}.txt`;
-      link.click();
-    };
-    // Clear chat
-      clearBtn.onclick = async () => {
-      if (!activeRoom) return;
-      if (confirm("Are you sure you want to clear all messages in this room?")) {
-      const messagesRef = ref(db, `messages/${activeRoom}`);
-      await remove(messagesRef); // Make sure 'remove' is imported from Firebase
-      messagesEl.innerHTML = ""; // Clear UI
+// Download chat
+downloadBtn.onclick=()=>{
+  let chatText=`Chatroom: ${activeRoom}\n====================\n\n`;
+  messagesEl.querySelectorAll(".message").forEach(msg=>{
+    const meta=msg.querySelector(".meta")?.textContent||"";
+    const text=msg.innerText.replace(meta,"").replace(">>>","").trim();
+    chatText+=`${meta}\n${text}\n\n`;
+  });
+  const blob=new Blob([chatText],{type:"text/plain"});
+  const link=document.createElement("a");
+  link.href=URL.createObjectURL(blob);
+  link.download=`chatroom-${activeRoom}.txt`;
+  link.click();
+};
+
+// Clear chat
+clearBtn.onclick = async () => {
+  if (!activeRoom) return;
+  if (confirm("Are you sure you want to clear all messages in this room?")) {
+    const messagesRef = ref(db, `messages/${activeRoom}`);
+    await remove(messagesRef);
+    messagesEl.innerHTML = "";
   }
 };
-    // Quit chatroom
-      leaveBtn.onclick = () => {
-      localStorage.removeItem("chatroom");
-      localStorage.removeItem("nickname");
-      activeRoom = null;
-      nickname = null;
-      messagesEl.innerHTML = "";
-      setup.style.display = "flex";
-      roomDisplay.style.display = "none";
-      msgInput.disabled = true;
-      sendBtn.disabled = true;
-    };
-  </script>
-  
+
+// Quit chatroom
+leaveBtn.onclick = () => {
+  localStorage.removeItem("chatroom");
+  localStorage.removeItem("nickname");
+  activeRoom = null;
+  nickname = null;
+  messagesEl.innerHTML = "";
+  setup.style.display = "flex";
+  roomDisplay.style.display = "none";
+  msgInput.disabled = true;
+  sendBtn.disabled = true;
+};
+</script>
 </body>
 </html>
