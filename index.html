@@ -155,7 +155,7 @@ header button {
 }
 .message.emoji {
   font-size: 22px;
-  text-align: center;
+  text-align: left;
   background: transparent;
   box-shadow: none;
 }
@@ -167,19 +167,48 @@ header button {
       margin-bottom: 4px;
     }
 
-    .message.other {
-      background: rgb(12, 5, 92);
-      align-self: flex-start;
-      color: hsl(60, 4%, 90%);
-      border-bottom-left-radius: 4px;
-    }
+   .message.other {
+  align-self: flex-start;
+  color: hsl(60, 19%, 13%);
+  border-bottom-left-radius: 4px;
+
+  /* Glassy water effect */
+  background: rgba(255, 255, 255, 0.15); /* translucent */
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+
+  /* optional glossy gradient overlay */
+  background-image: linear-gradient(
+    to top left,
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0.05)
+  );
+}
 
     .message.me {
-      background: rgb(11, 0, 4);
-      color: hsl(60, 4%, 90%);
-      align-self: flex-end;
-      border-bottom-right-radius: 4px;
-    }
+  align-self: flex-end;
+  color: hsl(60, 4%, 90%);
+  border-bottom-right-radius: 4px;
+
+  /* Glassy water effect with dark tint */
+  background: rgba(137, 137, 208, 0.3); /* darker glass tint */
+  backdrop-filter: blur(12px) saturate(200%);
+  -webkit-backdrop-filter: blur(12px) saturate(200%);
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+
+  /* glossy highlight */
+  background-image: linear-gradient(
+    to top left,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.05)
+  );
+}
+
 
     /* Composer */
    .composer {
