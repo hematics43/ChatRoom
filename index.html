@@ -311,14 +311,62 @@ header button {
  <script>
   // Array of light gradient options
   const gradients = [
-    "radial-gradient(circle at center, #fdfbfb, #ebedee)",   // soft white/grey
-    "radial-gradient(circle at center, #f6d365, #fda085)",   // peach
-    "radial-gradient(circle at center, #a1c4fd, #c2e9fb)",   // light blue
-    "radial-gradient(circle at center, #d4fc79, #96e6a1)",   // green/yellow
-    "radial-gradient(circle at center, #fbc2eb, #a6c1ee)",   // pink/purple
-    "radial-gradient(circle at center, #ffecd2, #fcb69f)",   // pastel orange
-    "radial-gradient(circle at center, #cfd9df, #e2ebf0)"    // very light gray/blue
-  ];
+  "radial-gradient(circle at center, #fdfbfb, #ebedee)",   // soft white/grey
+  "radial-gradient(circle at center, #f6d365, #fda085)",   // peach
+  "radial-gradient(circle at center, #a1c4fd, #c2e9fb)",   // light blue
+  "radial-gradient(circle at center, #d4fc79, #96e6a1)",   // green/yellow
+  "radial-gradient(circle at center, #fbc2eb, #a6c1ee)",   // pink/purple
+  "radial-gradient(circle at center, #ffecd2, #fcb69f)",   // pastel orange
+  "radial-gradient(circle at center, #cfd9df, #e2ebf0)",   // very light gray/blue
+  "radial-gradient(circle at center, #e0c3fc, #8ec5fc)",   // lavender-blue
+  "radial-gradient(circle at center, #f9f586, #a6e7ff)",   // lemon sky
+  "radial-gradient(circle at center, #ffdde1, #ee9ca7)",   // pink-peach
+  "radial-gradient(circle at center, #c2e9fb, #e2fcff)",   // icy blue
+  "radial-gradient(circle at center, #fdfbfb, #dfe9f3)",   // light cloud
+  "radial-gradient(circle at center, #f8e2cf, #f1f2b5)",   // cream-yellow
+  "radial-gradient(circle at center, #f6f0c4, #d0e6a5)",   // lime sorbet
+  "radial-gradient(circle at center, #e0c3fc, #f9f9f9)",   // soft violet white
+  "radial-gradient(circle at center, #e8cbc0, #636fa4)",   // dusty purple
+  "radial-gradient(circle at center, #ffefba, #ffffff)",   // warm white
+  "radial-gradient(circle at center, #a1ffce, #faffd1)",   // mint-vanilla
+  "radial-gradient(circle at center, #d9afd9, #97d9e1)",   // pastel purple-blue
+  "radial-gradient(circle at center, #fff1eb, #ace0f9)",   // sky peach
+  "radial-gradient(circle at center, #ffd1ff, #f5c7f7)",   // cotton candy
+  "radial-gradient(circle at center, #ff9a9e, #fecfef)",   // pink fade
+  "radial-gradient(circle at center, #f6d365, #fda085)",   // golden peach
+  "radial-gradient(circle at center, #fbc2eb, #a6c1ee)",   // rosy lavender
+  "radial-gradient(circle at center, #cfd9df, #e2ebf0)",   // icy grey
+  "radial-gradient(circle at center, #e0c3fc, #8ec5fc)",   // purple blue
+  "radial-gradient(circle at center, #d4fc79, #96e6a1)",   // lime mint
+  "radial-gradient(circle at center, #fbc2eb, #f9c6e0)",   // pink blush
+  "radial-gradient(circle at center, #a8edea, #fed6e3)",   // aqua pink
+  "radial-gradient(circle at center, #f5f7fa, #c3cfe2)",   // frost
+  "radial-gradient(circle at center, #fdfcfb, #e2d1c3)",   // beige sand
+  "radial-gradient(circle at center, #f1f2b5, #135058)",   // light teal
+  "radial-gradient(circle at center, #fffcdc, #d9a7c7)",   // peach lavender
+  "radial-gradient(circle at center, #a6c0fe, #f68084)",   // pastel red-blue
+  "radial-gradient(circle at center, #fccb90, #d57eeb)",   // warm lavender
+  "radial-gradient(circle at center, #fddb92, #d1fdff)",   // peach aqua
+  "radial-gradient(circle at center, #9890e3, #b1f4cf)",   // violet mint
+  "radial-gradient(circle at center, #fff6b7, #f6416c)",   // yellow-pink
+  "radial-gradient(circle at center, #e0c3fc, #f9c5d1)",   // violet rose
+  "radial-gradient(circle at center, #cfd9df, #a6c1ee)",   // grey violet
+  "radial-gradient(circle at center, #d299c2, #fef9d7)",   // lilac cream
+  "radial-gradient(circle at center, #fddb92, #d1fdff)",   // golden aqua
+  "radial-gradient(circle at center, #fceabb, #f8b500)",   // honey
+  "radial-gradient(circle at center, #d9a7c7, #fffcdc)",   // lavender blush
+  "radial-gradient(circle at center, #f6d365, #fda085)",   // orange peach
+  "radial-gradient(circle at center, #ffecd2, #fcb69f)",   // sunny blush
+  "radial-gradient(circle at center, #ffdde1, #ee9ca7)",   // sunset pink
+  "radial-gradient(circle at center, #ff9a9e, #fecfef)",   // blush pink
+  "radial-gradient(circle at center, #cfd9df, #e2ebf0)",   // cloudy day
+  "radial-gradient(circle at center, #a1c4fd, #c2e9fb)",   // light sky
+  "radial-gradient(circle at center, #fbc2eb, #a6c1ee)",   // lavender rose
+  "radial-gradient(circle at center, #fdfbfb, #ebedee)",   // cloudy white
+  "radial-gradient(circle at center, #d4fc79, #96e6a1)",   // spring green
+  "radial-gradient(circle at center, #fff1eb, #ace0f9)"    // soft sky
+];
+
 
   // Pick one at random on each refresh
   const randomGradient = gradients[Math.floor(Math.random() * gradients.length)];
@@ -414,8 +462,26 @@ const instrBtn=document.getElementById("instructions-btn");
 const instructions=document.getElementById("instructions");
 const leaveBtn = document.getElementById("leave-btn");
 const clearBtn = document.getElementById("clear-btn");
-const quickEmojis = ["❤️", "👍", "🔥","🎉", "🤩", "🤝"];
-const tapEmoji = "❤️"; 
+const quickEmojis = [
+  "❤️", // red heart
+  "🧡", // orange heart
+  "💛", // yellow heart
+  "💚", // green heart
+  "💙", // blue heart
+  "💜", // purple heart
+  "🤍", // white heart
+  "💖", // sparkling heart
+  "💗", // growing heart
+  "💓", // beating heart
+  "💞", // revolving hearts
+  "💕", // two hearts
+  "💝", // heart with ribbon
+  "💘", // heart with arrow
+  "💟", // heart decoration
+  "❣️", // heavy heart exclamation
+  "💔"  // broken heart
+];
+
 
 
 let activeRoom=null;
