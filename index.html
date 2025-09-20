@@ -12,7 +12,7 @@
       --bg:#010208;
       --muted:#a5b4fc;
      --accent1:#6366f1;
-  --accent2:#3b82f6;
+  --accent2:#cdd2dd;
       --me-gradient:linear-gradient(135deg,#03040d,#0a121e);
     }
 
@@ -136,7 +136,7 @@ header button {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background: radial-gradient(#8b81e7);
+  background: radial-gradient(#6dddd4);
   scroll-behavior: smooth; /* smooth scroll on new messages */
   padding-bottom: 80px; /* space for composer */
 
@@ -308,6 +308,28 @@ header button {
   </style>
 </head>
 <body>
+ <script>
+  // Array of light gradient options
+  const gradients = [
+    "radial-gradient(circle at center, #fdfbfb, #ebedee)",   // soft white/grey
+    "radial-gradient(circle at center, #f6d365, #fda085)",   // peach
+    "radial-gradient(circle at center, #a1c4fd, #c2e9fb)",   // light blue
+    "radial-gradient(circle at center, #d4fc79, #96e6a1)",   // green/yellow
+    "radial-gradient(circle at center, #fbc2eb, #a6c1ee)",   // pink/purple
+    "radial-gradient(circle at center, #ffecd2, #fcb69f)",   // pastel orange
+    "radial-gradient(circle at center, #cfd9df, #e2ebf0)"    // very light gray/blue
+  ];
+
+  // Pick one at random on each refresh
+  const randomGradient = gradients[Math.floor(Math.random() * gradients.length)];
+
+  // Apply to background (example: messages area)
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("messages").style.background = randomGradient;
+  });
+</script>
+
+
 <div class="container">
  <header class="header-top">
   <!-- Logo -->
