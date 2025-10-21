@@ -36,6 +36,15 @@
   height: 60px;
   margin-right:2px;
 }
+.system-msg {
+  text-align: center;
+  font-size: 0.85em;
+  color: #aaa;
+  margin: 8px 0;
+  opacity: 0.8;
+  font-style: italic;
+}
+
 
 /* Chatroom name link */
 .chatroom-link {
@@ -533,7 +542,7 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     <button id="clear-btn">🗑️</button>
     <button id="leave-btn">🔚</button>
     <button id="sound-btn">🔊</button>
-    <button id="invite-btn">🔗</button>
+    <button id="invite-btn">X</button>
   </div>
 
   <!-- Messages -->
@@ -549,7 +558,7 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   <div class="invite-box">
     <h3>🔗 Share Room Invitation</h3>
     <p>Your room code: <strong id="invite-room-code"></strong></p>
-    <textarea id="invite-message" placeholder="Write a short message...">Join me in this chat 📢</textarea>
+    <textarea id="invite-message" placeholder="Write a short message...">Feature is coming Soon...</textarea>
     <input id="invite-link" type="text" readonly />
     <div class="invite-actions">
       <button id="copy-link-btn">📋 Copy Link</button>
@@ -693,6 +702,15 @@ setTimeout(() => {
   });
 }, 100);
   
+if (data.name === "📢 System") {
+  const msgDiv = document.createElement("div");
+  msgDiv.classList.add("system-msg");
+  msgDiv.textContent = data.text;
+  messagesDiv.appendChild(msgDiv);
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  return;
+}
+
 }
 function autoScroll() {
   const nearBottom = messagesEl.scrollHeight - messagesEl.scrollTop - messagesEl.clientHeight < 150;
@@ -726,6 +744,14 @@ function joinRoom(room) {
   onChildAdded(messagesRef, (snapshot) => {
   const data = snapshot.val();
   renderMessage(data);
+
+  // Post system message: user joined
+const sysRef = push(ref(db, `messages/${activeRoom}`));
+set(sysRef, {
+  name: "📢 System",
+  text: `${nickname} joined the room`,
+  time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+});
 
   // 🔔 Play sound only for messages from others
   if (data.name !== nickname && soundEnabled) {
@@ -832,6 +858,16 @@ soundBtn.onclick = () => {
   soundEnabled = !soundEnabled;
   soundBtn.textContent = soundEnabled ? "🔊" : "🔇";
 };
+// Post system message: user left
+if (activeRoom && nickname) {
+  const sysRef = push(ref(db, `messages/${activeRoom}`));
+  set(sysRef, {
+    name: "📢 System",
+    text: `${nickname} left the room`,
+    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  });
+}
+
 
 </script>
 </body>
