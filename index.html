@@ -532,6 +532,7 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     <button id="download-btn" style="display:none;">💾</button>
     <button id="clear-btn">🗑️</button>
     <button id="leave-btn">🔚</button>
+    <button id="sound-btn">🔊</button>
     <button id="invite-btn">🔗</button>
   </div>
 
@@ -541,7 +542,7 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   <!-- Composer -->
   <div class="composer">
     <textarea id="msg-input" placeholder="Write here..." disabled></textarea>
-    <button id="send-btn" disabled>📣</button>
+    <button id="send-btn" disabled>📢📩📩📩</button>
   </div>
   <!-- Invite Modal -->
 <div id="invite-modal" class="invite-modal">
@@ -616,8 +617,12 @@ const firebaseConfig = {
   databaseURL: "https://code-chatroom-default-rtdb.asia-southeast1.firebasedatabase.app/"
 };
 
+
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+// Notification sound
+const popSound = new Audio("pop.wav");
+popSound.volume = 0.3; // soft volume
 
 // Elements
 const setup=document.getElementById("setup");
@@ -635,6 +640,9 @@ const instrBtn=document.getElementById("instructions-btn");
 const instructions=document.getElementById("instructions");
 const leaveBtn = document.getElementById("leave-btn");
 const clearBtn = document.getElementById("clear-btn");
+const soundBtn = document.getElementById("sound-btn");
+let soundEnabled = true;
+
 const quickEmojis = [
   "❤️", // red heart
   "🧡", // orange heart
@@ -677,9 +685,25 @@ msg.className = cls;
   messagesEl.appendChild(msg);
 
   // Auto-scroll to bottom
-  messagesEl.scrollTop = messagesEl.scrollHeight;
+// Auto-scroll to the last message smoothly
+setTimeout(() => {
+  messagesEl.scrollTo({
+    top: messagesEl.scrollHeight,
+    behavior: "smooth"
+  });
+}, 100);
   
 }
+function autoScroll() {
+  const nearBottom = messagesEl.scrollHeight - messagesEl.scrollTop - messagesEl.clientHeight < 150;
+  if (nearBottom) {
+    messagesEl.scrollTo({
+      top: messagesEl.scrollHeight,
+      behavior: "smooth"
+    });
+  }
+}
+
 
 // Join room
 function joinRoom(room) {
@@ -699,7 +723,18 @@ function joinRoom(room) {
   sendBtn.disabled = false;
 
   const messagesRef = ref(db, `messages/${activeRoom}`);
-  onChildAdded(messagesRef, (snapshot) => renderMessage(snapshot.val()));
+  onChildAdded(messagesRef, (snapshot) => {
+  const data = snapshot.val();
+  renderMessage(data);
+
+  // 🔔 Play sound only for messages from others
+  if (data.name !== nickname && soundEnabled) {
+    popSound.currentTime = 0;
+    popSound.play().catch(() => {});
+  }
+});
+
+
 }
 
 joinBtn.onclick=()=>{ if(roomInput.value.trim()) joinRoom(roomInput.value.trim()); };
@@ -792,6 +827,12 @@ leaveBtn.onclick = () => {
   msgInput.disabled = true;
   sendBtn.disabled = true;
 };
+
+soundBtn.onclick = () => {
+  soundEnabled = !soundEnabled;
+  soundBtn.textContent = soundEnabled ? "🔊" : "🔇";
+};
+
 </script>
 </body>
 </html>
