@@ -714,8 +714,25 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 // Notification sound
+// Sound setup
 const popSound = new Audio("pop.wav");
-popSound.volume = 0.3; // soft volume
+popSound.volume = 0.4;
+
+// ✅ Unlock sound once on first user click (browser autoplay policy)
+window.addEventListener("click", () => {
+  popSound.play().catch(() => {}); 
+  popSound.pause();
+  popSound.currentTime = 0;
+}, { once: true });
+
+// ✅ Safer sound play function
+function playPopSound() {
+  if (!soundEnabled) return;
+  const clone = popSound.cloneNode(); // allows overlapping sounds
+  clone.volume = popSound.volume;
+  clone.play().catch(() => {});
+}
+
 
 // Elements
 const setup=document.getElementById("setup");
