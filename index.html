@@ -608,7 +608,7 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   <!-- Composer -->
   <div class="composer">
     <textarea id="msg-input" placeholder="Write here..." disabled></textarea>
-    <button id="send-btn" disabled>📢📩📩📩</button>
+    <button id="send-btn" disabled>╰┈➤</button>
   </div>
   <!-- Invite Modal -->
 <div id="invite-modal" class="invite-modal">
@@ -657,7 +657,7 @@ function showWelcomeOnce(name, room) {
   const visitKey = `welcomed_${room}_${name}`;
   if (!localStorage.getItem(visitKey)) {
     welcomeTitle.textContent = `👋 Welcome, ${name}`;
-    welcomeMessage.textContent = `You’ve joined room #${room} — enjoy chatting 🎉 (Educational Purpose)`;
+    welcomeMessage.textContent = `You’ve joined room #${room} — enjoy chatting 🎉 (Educational Purpose) Double tap 👋`;
     welcomePopup.classList.add("show");
     localStorage.setItem(visitKey, "true");
   }
@@ -755,23 +755,8 @@ const soundBtn = document.getElementById("sound-btn");
 let soundEnabled = true;
 
 const quickEmojis = [
-  "❤️", // red heart
-  "🧡", // orange heart
-  "💛", // yellow heart
-  "💚", // green heart
-  "💙", // blue heart
-  "💜", // purple heart
-  "🤍", // white heart
-  "💖", // sparkling heart
-  "💗", // growing heart
-  "💓", // beating heart
-  "💞", // revolving hearts
-  "💕", // two hearts
-  "💝", // heart with ribbon
-  "💘", // heart with arrow
-  "💟", // heart decoration
-  "❣️", // heavy heart exclamation
-  ];
+  "👋", // red heart
+];
 
 // Toggle instructions
 instrBtn.onclick=()=>{
