@@ -433,6 +433,60 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 #close-invite-btn:hover {
   background: #ddd;
 }
+/* Personalized Welcome Popup */
+.welcome-popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+  backdrop-filter: blur(6px);
+}
+
+.welcome-popup.show {
+  display: flex;
+  animation: fadeIn 0.3s ease;
+}
+
+.welcome-box {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 14px;
+  padding: 24px;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  animation: popUp 0.25s ease;
+}
+
+.welcome-box h2 {
+  margin-top: 0;
+  color: #202a44;
+}
+
+.welcome-box p {
+  color: #333;
+  font-size: 15px;
+}
+
+.welcome-box button {
+  margin-top: 14px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent1), var(--accent2));
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.welcome-box button:hover {
+  transform: scale(1.05);
+}
 
 </style>
 </head>
@@ -515,6 +569,8 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   <a href="https://hematics43.github.io/ChatRoom/" id="chatroom-link" class="chatroom-link">>>>Chat📢Room<<<</a>
   <!-- Instructions Button -->
   <button id="instructions-btn">⚙️Instruction</button>
+  
+
 </header>
 
  <div id="instructions">
@@ -566,6 +622,14 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     </div>
   </div>
 </div>
+<!-- Personalized Welcome Popup -->
+<div id="welcome-popup" class="welcome-popup">
+  <div class="welcome-box">
+    <h2 id="welcome-title">👋 Welcome!</h2>
+    <p id="welcome-message">Let’s get started 🎉</p>
+    <button id="welcome-ok-btn">Let’s Go 🚀</button>
+  </div>
+</div>
 
 </div>
 
@@ -579,6 +643,27 @@ const inviteMessage = document.getElementById("invite-message");
 const inviteLink = document.getElementById("invite-link");
 const copyLinkBtn = document.getElementById("copy-link-btn");
 const closeInviteBtn = document.getElementById("close-invite-btn");
+let activeRoom=null;
+let nickname=null;
+
+// --- Personalized Welcome Popup ---
+const welcomePopup = document.getElementById("welcome-popup");
+const welcomeTitle = document.getElementById("welcome-title");
+const welcomeMessage = document.getElementById("welcome-message");
+const welcomeOkBtn = document.getElementById("welcome-ok-btn");
+
+function showWelcomeOnce(name, room) {
+  const visitKey = `welcomed_${room}_${name}`;
+  if (!localStorage.getItem(visitKey)) {
+    welcomeTitle.textContent = `👋 Welcome, ${name}`;
+    welcomeMessage.textContent = `You’ve joined room #${room} — enjoy chatting 🎉 (Educational Purpose)`;
+    welcomePopup.classList.add("show");
+    localStorage.setItem(visitKey, "true");
+  }
+}
+welcomeOkBtn.onclick = () => {
+  welcomePopup.classList.remove("show");
+};
 
 
 // Open invite modal
@@ -609,7 +694,6 @@ copyLinkBtn.onclick = async () => {
     alert("Could not copy the link. Please copy it manually.");
   }
 };
-
 
 // Close modal
 closeInviteBtn.onclick = () => inviteModal.classList.remove("show");
@@ -669,13 +753,7 @@ const quickEmojis = [
   "💘", // heart with arrow
   "💟", // heart decoration
   "❣️", // heavy heart exclamation
-  "💔"  // broken heart
-];
-
-
-
-let activeRoom=null;
-let nickname=null;
+  ];
 
 // Toggle instructions
 instrBtn.onclick=()=>{
@@ -739,6 +817,9 @@ function joinRoom(room) {
   downloadBtn.style.display = "inline-block";
   msgInput.disabled = false;
   sendBtn.disabled = false;
+    // Show welcome popup only first time in this room
+  showWelcomeOnce(nickname, activeRoom);
+
 
   const messagesRef = ref(db, `messages/${activeRoom}`);
   onChildAdded(messagesRef, (snapshot) => {
@@ -867,8 +948,6 @@ if (activeRoom && nickname) {
     time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   });
 }
-
-
 </script>
 </body>
 </html>
