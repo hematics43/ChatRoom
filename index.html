@@ -237,7 +237,7 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   resize: none;
   background: rgba(255,255,255,0.1);
   color: #fff;
-  min-height: 30px;     /* ✅ avoids zoom */
+  min-height: 40px;     /* ✅ avoids zoom */
   font-size: 16px;      /* ✅ avoids zoom on iOS */
   line-height: 1;
   overflow-y: auto;
@@ -488,6 +488,7 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   transform: scale(1.05);
 }
 
+
 </style>
 </head>
 <body>
@@ -574,13 +575,13 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 </header>
 
  <div id="instructions">
-  <h2>📖 How to Use ChatRoom Logo >>></h2>
+  <h2>📖 How to Use ChatRoom >>></h2>
   <ol>
    <li><p class="note"></p>🔑 Enter a <b>Room Code</b> & <b>Nickname</b>, then click <b>Join</b>.</li>
     <li><p class="note"></p>🎲 Or click <b>Generate Room</b> to make a new one & share it.</li>
     <li><p class="note"></p>💬 Chat instantly — your messages are on the right, others on the left.</li>
     <li><p class="note"></p>🧹 Use <b>💾 as Download chats</b>, <b>🗑️ as Clear all chats</b>,<b>🔚 as Exit chat room</b></li>
-    <li><p class="note">⚠️ Note: Rooms are always active. If everyone leaves, the chat history will be in room.</p></li></ol>
+    <li><p class="note">⚠️ Note: Rooms are always active. If everyone leaves, the chat history will be in room. And send only short messages</p></li></ol>
 </div>
 
 <!-- Setup -->
@@ -785,7 +786,7 @@ let cls = "message " + (data.name === nickname ? "me" : "other");
 if (data.type === "emoji") cls += " emoji";
 msg.className = cls;
   const time = data.createdAt ? new Date(data.createdAt).toLocaleString() : "";
-  msg.innerHTML = `<span class="meta">${data.name || "Anon"} · ${time}</span><br>👉 ${data.text}`;
+  msg.innerHTML = `<span class="meta">${data.name || "Anon"} · ${time}</span><br> ╰➤ ${data.text}`;
   messagesEl.appendChild(msg);
 
   // Auto-scroll to bottom
@@ -913,6 +914,7 @@ msgInput.addEventListener("keydown", e => {
     sendBtn.click();
   }
 });
+
 
 // Download chat
 downloadBtn.onclick=()=>{
