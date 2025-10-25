@@ -270,8 +270,8 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 
 /* Logo */
 .chat-logo {
-  width: 40px;
-  height: 40px;
+  width: 20px;
+  height: 20px;
   object-fit: contain;
 }
 
@@ -289,7 +289,7 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 
 .chatroom-link:hover {
   transform: scale(1.05);
-  text-shadow: 0 0 6px rgba(255,255,255,0.6);
+  text-shadow: 0 0 6px rgba(190, 16, 16, 0.6);
 }
 
 /* Instructions Button */
@@ -482,6 +482,23 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 .welcome-box button:hover {
   transform: scale(1.05);
 }
+.room-stats {
+  width: 100%;
+  text-align: center;
+  font-size: 0.9em;
+  color: #e9ebf5;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 6px 0;
+  border-radius: 0 0 8px 8px;
+  backdrop-filter: blur(6px);
+  box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.15);
+  margin-bottom: 5px;
+}
+.room-stats:hover {
+  background: rgba(255,255,255,0.12);
+  transition: 0.3s;
+}
+
   </style>
 </head>
 <body>
@@ -578,13 +595,21 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   </div>
 
   <div class="room-header" id="room-display" style="display:none;">
-    <span id="room-code-text"></span>
-    <button id="download-btn" style="display:none;">💾</button>
-    <button id="clear-btn">🗑️</button>
-    <button id="leave-btn">🔚</button>
-    <button id="sound-btn">🔊</button>
-    <button id="invite-btn">X</button>
-  </div>
+  <span id="room-code-text"></span>
+  <button id="download-btn" style="display:none;">💾</button>
+  <button id="clear-btn">🗑️</button>
+  <button id="leave-btn">🔚</button>
+  <button id="sound-btn">🔊</button>
+  <button id="invite-btn">X</button>
+</div>
+
+<!-- ✅ New Stats Bar -->
+<div id="room-stats" class="room-stats" style="display:none;">
+  👥 <span id="user-count">0</span> Users •
+  💬 <span id="message-count">0</span> Messages •
+  🕒 Started: <span id="room-start">--:--</span>
+</div>
+
 
   <div id="messages"></div>
 
@@ -618,6 +643,8 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+  import { onValue, update, onDisconnect } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+
   import {
     getDatabase,
     ref,
@@ -732,6 +759,14 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   const leaveBtn = document.getElementById("leave-btn");
   const clearBtn = document.getElementById("clear-btn");
   const soundBtn = document.getElementById("sound-btn");
+  // ✅ Stats elements
+const userCountEl = document.getElementById("user-count");
+const msgCountEl = document.getElementById("message-count");
+const roomStartEl = document.getElementById("room-start");
+const roomStatsEl = document.getElementById("room-stats");
+let msgCount = 0;
+
+
   let soundEnabled = true;
 
   const quickEmojis = ["👋"];
@@ -802,6 +837,7 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     messagesEl.innerHTML = "";
     setup.style.display = "none";
     roomDisplay.style.display = "flex";
+    roomStatsEl.style.display = "block"; // show stats bar
     roomCodeText.innerHTML = `Room Code: <span>${activeRoom}</span>`;
     downloadBtn.style.display = "inline-block";
     msgInput.disabled = false;
@@ -827,7 +863,9 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     } catch (err) {
       console.warn("Failed to post join system message:", err);
     }
+  
   }
+  
 
   joinBtn.onclick = () => { if (roomInput.value.trim()) joinRoom(roomInput.value.trim()); };
   genBtn.onclick = () => {
@@ -934,6 +972,7 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     localStorage.removeItem("nickname");
     activeRoom = null;
     nickname = null;
+    roomStatsEl.style.display = "none";
     detachListener();
     messagesEl.innerHTML = "";
     setup.style.display = "flex";
