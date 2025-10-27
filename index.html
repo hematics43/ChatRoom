@@ -1,8 +1,10 @@
+
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
   <title>>>>Chat📢Room<<<</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
@@ -43,6 +45,7 @@
   font-style: italic;
 }
 
+
 /* Chatroom name link */
 .chatroom-link {
   font-size: 1.2em;
@@ -81,6 +84,7 @@
   transform: scale(1.05);
   text-shadow: 0 0 6px rgb(16, 1, 1);
 }
+
 
 /* Adjust buttons */
 header button {
@@ -143,6 +147,7 @@ header button {
   background: radial-gradient(#6dddd4);
   scroll-behavior: smooth; /* smooth scroll on new messages */
   padding-bottom: 80px; /* space for composer */
+
 }
 
   .message {
@@ -270,8 +275,8 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 
 /* Logo */
 .chat-logo {
-  width: 20px;
-  height: 20px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
 }
 
@@ -289,7 +294,7 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 
 .chatroom-link:hover {
   transform: scale(1.05);
-  text-shadow: 0 0 6px rgba(190, 16, 16, 0.6);
+  text-shadow: 0 0 6px rgba(255,255,255,0.6);
 }
 
 /* Instructions Button */
@@ -482,111 +487,104 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 .welcome-box button:hover {
   transform: scale(1.05);
 }
-.room-stats {
-  width: 100%;
-  text-align: center;
-  font-size: 0.9em;
-  color: #e9ebf5;
-  background: rgba(255, 255, 255, 0.08);
-  padding: 6px 0;
-  border-radius: 0 0 8px 8px;
-  backdrop-filter: blur(6px);
-  box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.15);
-  margin-bottom: 5px;
-}
-.room-stats:hover {
-  background: rgba(255,255,255,0.12);
-  transition: 0.3s;
-}
 
-  </style>
+
+</style>
 </head>
 <body>
  <script>
-  // Array of light gradient options (same as original)
+  // Array of light gradient options
   const gradients = [
-    "radial-gradient(circle at center, #fdfbfb, #ebedee)",
-    "radial-gradient(circle at center, #f6d365, #fda085)",
-    "radial-gradient(circle at center, #a1c4fd, #c2e9fb)",
-    "radial-gradient(circle at center, #d4fc79, #96e6a1)",
-    "radial-gradient(circle at center, #fbc2eb, #a6c1ee)",
-    "radial-gradient(circle at center, #ffecd2, #fcb69f)",
-    "radial-gradient(circle at center, #cfd9df, #e2ebf0)",
-    "radial-gradient(circle at center, #e0c3fc, #8ec5fc)",
-    "radial-gradient(circle at center, #f9f586, #a6e7ff)",
-    "radial-gradient(circle at center, #ffdde1, #ee9ca7)",
-    "radial-gradient(circle at center, #c2e9fb, #e2fcff)",
-    "radial-gradient(circle at center, #fdfbfb, #dfe9f3)",
-    "radial-gradient(circle at center, #f8e2cf, #f1f2b5)",
-    "radial-gradient(circle at center, #f6f0c4, #d0e6a5)",
-    "radial-gradient(circle at center, #e0c3fc, #f9f9f9)",
-    "radial-gradient(circle at center, #e8cbc0, #636fa4)",
-    "radial-gradient(circle at center, #ffefba, #ffffff)",
-    "radial-gradient(circle at center, #a1ffce, #faffd1)",
-    "radial-gradient(circle at center, #d9afd9, #97d9e1)",
-    "radial-gradient(circle at center, #fff1eb, #ace0f9)",
-    "radial-gradient(circle at center, #ffd1ff, #f5c7f7)",
-    "radial-gradient(circle at center, #ff9a9e, #fecfef)",
-    "radial-gradient(circle at center, #f6d365, #fda085)",
-    "radial-gradient(circle at center, #fbc2eb, #a6c1ee)",
-    "radial-gradient(circle at center, #cfd9df, #e2ebf0)",
-    "radial-gradient(circle at center, #e0c3fc, #8ec5fc)",
-    "radial-gradient(circle at center, #d4fc79, #96e6a1)",
-    "radial-gradient(circle at center, #fbc2eb, #f9c6e0)",
-    "radial-gradient(circle at center, #a8edea, #fed6e3)",
-    "radial-gradient(circle at center, #f5f7fa, #c3cfe2)",
-    "radial-gradient(circle at center, #fdfcfb, #e2d1c3)",
-    "radial-gradient(circle at center, #f1f2b5, #135058)",
-    "radial-gradient(circle at center, #fffcdc, #d9a7c7)",
-    "radial-gradient(circle at center, #a6c0fe, #f68084)",
-    "radial-gradient(circle at center, #fccb90, #d57eeb)",
-    "radial-gradient(circle at center, #fddb92, #d1fdff)",
-    "radial-gradient(circle at center, #9890e3, #b1f4cf)",
-    "radial-gradient(circle at center, #fff6b7, #f6416c)",
-    "radial-gradient(circle at center, #e0c3fc, #f9c5d1)",
-    "radial-gradient(circle at center, #cfd9df, #a6c1ee)",
-    "radial-gradient(circle at center, #d299c2, #fef9d7)",
-    "radial-gradient(circle at center, #fddb92, #d1fdff)",
-    "radial-gradient(circle at center, #fceabb, #f8b500)",
-    "radial-gradient(circle at center, #d9a7c7, #fffcdc)",
-    "radial-gradient(circle at center, #f6d365, #fda085)",
-    "radial-gradient(circle at center, #ffecd2, #fcb69f)",
-    "radial-gradient(circle at center, #ffdde1, #ee9ca7)",
-    "radial-gradient(circle at center, #ff9a9e, #fecfef)",
-    "radial-gradient(circle at center, #cfd9df, #e2ebf0)",
-    "radial-gradient(circle at center, #a1c4fd, #c2e9fb)",
-    "radial-gradient(circle at center, #fbc2eb, #a6c1ee)",
-    "radial-gradient(circle at center, #fdfbfb, #ebedee)",
-    "radial-gradient(circle at center, #d4fc79, #96e6a1)",
-    "radial-gradient(circle at center, #fff1eb, #ace0f9)"
-  ];
+  "radial-gradient(circle at center, #fdfbfb, #ebedee)",   // soft white/grey
+  "radial-gradient(circle at center, #f6d365, #fda085)",   // peach
+  "radial-gradient(circle at center, #a1c4fd, #c2e9fb)",   // light blue
+  "radial-gradient(circle at center, #d4fc79, #96e6a1)",   // green/yellow
+  "radial-gradient(circle at center, #fbc2eb, #a6c1ee)",   // pink/purple
+  "radial-gradient(circle at center, #ffecd2, #fcb69f)",   // pastel orange
+  "radial-gradient(circle at center, #cfd9df, #e2ebf0)",   // very light gray/blue
+  "radial-gradient(circle at center, #e0c3fc, #8ec5fc)",   // lavender-blue
+  "radial-gradient(circle at center, #f9f586, #a6e7ff)",   // lemon sky
+  "radial-gradient(circle at center, #ffdde1, #ee9ca7)",   // pink-peach
+  "radial-gradient(circle at center, #c2e9fb, #e2fcff)",   // icy blue
+  "radial-gradient(circle at center, #fdfbfb, #dfe9f3)",   // light cloud
+  "radial-gradient(circle at center, #f8e2cf, #f1f2b5)",   // cream-yellow
+  "radial-gradient(circle at center, #f6f0c4, #d0e6a5)",   // lime sorbet
+  "radial-gradient(circle at center, #e0c3fc, #f9f9f9)",   // soft violet white
+  "radial-gradient(circle at center, #e8cbc0, #636fa4)",   // dusty purple
+  "radial-gradient(circle at center, #ffefba, #ffffff)",   // warm white
+  "radial-gradient(circle at center, #a1ffce, #faffd1)",   // mint-vanilla
+  "radial-gradient(circle at center, #d9afd9, #97d9e1)",   // pastel purple-blue
+  "radial-gradient(circle at center, #fff1eb, #ace0f9)",   // sky peach
+  "radial-gradient(circle at center, #ffd1ff, #f5c7f7)",   // cotton candy
+  "radial-gradient(circle at center, #ff9a9e, #fecfef)",   // pink fade
+  "radial-gradient(circle at center, #f6d365, #fda085)",   // golden peach
+  "radial-gradient(circle at center, #fbc2eb, #a6c1ee)",   // rosy lavender
+  "radial-gradient(circle at center, #cfd9df, #e2ebf0)",   // icy grey
+  "radial-gradient(circle at center, #e0c3fc, #8ec5fc)",   // purple blue
+  "radial-gradient(circle at center, #d4fc79, #96e6a1)",   // lime mint
+  "radial-gradient(circle at center, #fbc2eb, #f9c6e0)",   // pink blush
+  "radial-gradient(circle at center, #a8edea, #fed6e3)",   // aqua pink
+  "radial-gradient(circle at center, #f5f7fa, #c3cfe2)",   // frost
+  "radial-gradient(circle at center, #fdfcfb, #e2d1c3)",   // beige sand
+  "radial-gradient(circle at center, #f1f2b5, #135058)",   // light teal
+  "radial-gradient(circle at center, #fffcdc, #d9a7c7)",   // peach lavender
+  "radial-gradient(circle at center, #a6c0fe, #f68084)",   // pastel red-blue
+  "radial-gradient(circle at center, #fccb90, #d57eeb)",   // warm lavender
+  "radial-gradient(circle at center, #fddb92, #d1fdff)",   // peach aqua
+  "radial-gradient(circle at center, #9890e3, #b1f4cf)",   // violet mint
+  "radial-gradient(circle at center, #fff6b7, #f6416c)",   // yellow-pink
+  "radial-gradient(circle at center, #e0c3fc, #f9c5d1)",   // violet rose
+  "radial-gradient(circle at center, #cfd9df, #a6c1ee)",   // grey violet
+  "radial-gradient(circle at center, #d299c2, #fef9d7)",   // lilac cream
+  "radial-gradient(circle at center, #fddb92, #d1fdff)",   // golden aqua
+  "radial-gradient(circle at center, #fceabb, #f8b500)",   // honey
+  "radial-gradient(circle at center, #d9a7c7, #fffcdc)",   // lavender blush
+  "radial-gradient(circle at center, #f6d365, #fda085)",   // orange peach
+  "radial-gradient(circle at center, #ffecd2, #fcb69f)",   // sunny blush
+  "radial-gradient(circle at center, #ffdde1, #ee9ca7)",   // sunset pink
+  "radial-gradient(circle at center, #ff9a9e, #fecfef)",   // blush pink
+  "radial-gradient(circle at center, #cfd9df, #e2ebf0)",   // cloudy day
+  "radial-gradient(circle at center, #a1c4fd, #c2e9fb)",   // light sky
+  "radial-gradient(circle at center, #fbc2eb, #a6c1ee)",   // lavender rose
+  "radial-gradient(circle at center, #fdfbfb, #ebedee)",   // cloudy white
+  "radial-gradient(circle at center, #d4fc79, #96e6a1)",   // spring green
+  "radial-gradient(circle at center, #fff1eb, #ace0f9)"    // soft sky
+];
 
+
+  // Pick one at random on each refresh
   const randomGradient = gradients[Math.floor(Math.random() * gradients.length)];
 
+  // Apply to background (example: messages area)
   document.addEventListener("DOMContentLoaded", () => {
-    const messages = document.getElementById("messages");
-    if (messages) messages.style.background = randomGradient;
+    document.getElementById("messages").style.background = randomGradient;
   });
 </script>
 
+
 <div class="container">
  <header class="header-top">
+  <!-- Logo -->
   <img src="logochat.png" alt="Chat Logo" class="chat-logo">
+  <!-- Chatroom Name as Link -->
   <a href="https://hematics43.github.io/ChatRoom/" id="chatroom-link" class="chatroom-link">>>>Chat📢Room<<<</a>
+  <!-- Instructions Button -->
   <button id="instructions-btn">⚙️Instruction</button>
+  
+
 </header>
 
  <div id="instructions">
   <h2>📖 How to Use ChatRoom >>></h2>
   <ol>
-   <li>🔑 Enter a <b>Room Code</b> & <b>Nickname</b>, then click <b>Join</b>.</li>
-    <li>🎲 Or click <b>Generate Room</b> to make a new one & share it.</li>
-    <li>💬 Chat instantly — your messages are on the right, others on the left.</li>
-    <li>🧹 Use <b>💾 as Download chats</b>, <b>🗑️ as Clear all chats</b>,<b>🔚 as Exit chat room</b></li>
-    <li>⚠️ Note: Rooms are always active. If everyone leaves, the chat history will be in room. And send only short messages</li>
-  </ol>
+   <li><p class="note"></p>🔑 Enter a <b>Room Code</b> & <b>Nickname</b>, then click <b>Join</b>.</li>
+    <li><p class="note"></p>🎲 Or click <b>Generate Room</b> to make a new one & share it.</li>
+    <li><p class="note"></p>💬 Chat instantly — your messages are on the right, others on the left.</li>
+    <li><p class="note"></p>🧹 Use <b>💾 as Download chats</b>, <b>🗑️ as Clear all chats</b>,<b>🔚 as Exit chat room</b></li>
+    <li><p class="note">⚠️ Note: Rooms are always active. If everyone leaves, the chat history will be in room. And send only short messages</p></li></ol>
 </div>
 
+<!-- Setup -->
   <div class="setup" id="setup">
     <input id="room-input" type="text" placeholder="Room Code"/>
     <input id="name-input" type="text" placeholder="Nickname"/>
@@ -594,30 +592,25 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     <button id="gen-btn">🤖Generate Room</button>
   </div>
 
+  <!-- Room header -->
   <div class="room-header" id="room-display" style="display:none;">
-  <span id="room-code-text"></span>
-  <button id="download-btn" style="display:none;">💾</button>
-  <button id="clear-btn">🗑️</button>
-  <button id="leave-btn">🔚</button>
-  <button id="sound-btn">🔊</button>
-  <button id="invite-btn">X</button>
-</div>
+    <span id="room-code-text"></span>
+    <button id="download-btn" style="display:none;">💾</button>
+    <button id="clear-btn">🗑️</button>
+    <button id="leave-btn">🔚</button>
+    <button id="sound-btn">🔊</button>
+    <button id="invite-btn">X</button>
+  </div>
 
-<!-- ✅ New Stats Bar -->
-<div id="room-stats" class="room-stats" style="display:none;">
-  👥 <span id="user-count">0</span> Users •
-  💬 <span id="message-count">0</span> Messages •
-  🕒 Started: <span id="room-start">--:--</span>
-</div>
-
-
+  <!-- Messages -->
   <div id="messages"></div>
 
+  <!-- Composer -->
   <div class="composer">
     <textarea id="msg-input" placeholder="Write here..." disabled></textarea>
     <button id="send-btn" disabled>╰┈➤</button>
   </div>
-
+  <!-- Invite Modal -->
 <div id="invite-modal" class="invite-modal">
   <div class="invite-box">
     <h3>🔗 Share Room Invitation</h3>
@@ -630,7 +623,7 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     </div>
   </div>
 </div>
-
+<!-- Personalized Welcome Popup -->
 <div id="welcome-popup" class="welcome-popup">
   <div class="welcome-box">
     <h2 id="welcome-title">👋 Welcome!</h2>
@@ -642,356 +635,323 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 </div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-  import { onValue, update, onDisconnect } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+const inviteBtn = document.getElementById("invite-btn");
+const inviteModal = document.getElementById("invite-modal");
+const inviteRoomCode = document.getElementById("invite-room-code");
+const inviteMessage = document.getElementById("invite-message");
+const inviteLink = document.getElementById("invite-link");
+const copyLinkBtn = document.getElementById("copy-link-btn");
+const closeInviteBtn = document.getElementById("close-invite-btn");
+let activeRoom=null;
+let nickname=null;
 
-  import {
-    getDatabase,
-    ref,
-    push,
-    onChildAdded,
-    remove,
-    set,
-    off
-  } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+// --- Personalized Welcome Popup ---
+const welcomePopup = document.getElementById("welcome-popup");
+const welcomeTitle = document.getElementById("welcome-title");
+const welcomeMessage = document.getElementById("welcome-message");
+const welcomeOkBtn = document.getElementById("welcome-ok-btn");
 
-  // Elements & state
-  const inviteBtn = document.getElementById("invite-btn");
-  const inviteModal = document.getElementById("invite-modal");
-  const inviteRoomCode = document.getElementById("invite-room-code");
-  const inviteMessage = document.getElementById("invite-message");
-  const inviteLink = document.getElementById("invite-link");
-  const copyLinkBtn = document.getElementById("copy-link-btn");
-  const closeInviteBtn = document.getElementById("close-invite-btn");
-  let activeRoom = null;
-  let nickname = null;
-  let messagesRef = null; // store ref so we can detach listener on leave
-  let childAddedCallback = null;
-
-  // Welcome popup
-  const welcomePopup = document.getElementById("welcome-popup");
-  const welcomeTitle = document.getElementById("welcome-title");
-  const welcomeMessageEl = document.getElementById("welcome-message");
-  const welcomeOkBtn = document.getElementById("welcome-ok-btn");
-
-  function showWelcomeOnce(name, room) {
-    const visitKey = `welcomed_${room}_${name}`;
-    if (!localStorage.getItem(visitKey)) {
-      welcomeTitle.textContent = `👋 Welcome, ${name}`;
-      welcomeMessageEl.textContent = `You’ve joined room #${room} — enjoy chatting 🎉 (Educational Purpose) Double tap 👋`;
-      welcomePopup.classList.add("show");
-      localStorage.setItem(visitKey, "true");
-    }
+function showWelcomeOnce(name, room) {
+  const visitKey = `welcomed_${room}_${name}`;
+  if (!localStorage.getItem(visitKey)) {
+    welcomeTitle.textContent = `👋 Welcome, ${name}`;
+    welcomeMessage.textContent = `You’ve joined room #${room} — enjoy chatting 🎉 (Educational Purpose) Double tap 👋`;
+    welcomePopup.classList.add("show");
+    localStorage.setItem(visitKey, "true");
   }
-  welcomeOkBtn.onclick = () => welcomePopup.classList.remove("show");
+}
+welcomeOkBtn.onclick = () => {
+  welcomePopup.classList.remove("show");
+};
 
-  // Invite modal behavior
-  inviteBtn.onclick = () => {
-    if (!activeRoom) return alert("Join a room first!");
-    const baseUrl = window.location.origin + window.location.pathname;
-    const link = `${baseUrl}?room=${encodeURIComponent(activeRoom)}&msg=${encodeURIComponent(inviteMessage.value)}`;
-    inviteRoomCode.textContent = activeRoom;
-    inviteLink.value = link;
-    inviteModal.classList.add("show");
-  };
-  inviteMessage.addEventListener("input", () => {
-    if (!activeRoom) return;
-    const baseUrl = window.location.origin + window.location.pathname;
-    inviteLink.value = `${baseUrl}?room=${encodeURIComponent(activeRoom)}&msg=${encodeURIComponent(inviteMessage.value)}`;
+
+// Open invite modal
+inviteBtn.onclick = () => {
+  if (!activeRoom) return alert("Join a room first!");
+  const baseUrl = window.location.origin + window.location.pathname;
+  const link = `${baseUrl}?room=${encodeURIComponent(activeRoom)}&msg=${encodeURIComponent(inviteMessage.value)}`;
+  
+  inviteRoomCode.textContent = activeRoom;
+  inviteLink.value = link;
+  inviteModal.classList.add("show");
+};
+
+// Update link as message changes
+inviteMessage.addEventListener("input", () => {
+  const baseUrl = window.location.origin + window.location.pathname;
+  const link = `${baseUrl}?room=${encodeURIComponent(activeRoom)}&msg=${encodeURIComponent(inviteMessage.value)}`;
+  inviteLink.value = link;
+});
+
+// Copy link to clipboard
+copyLinkBtn.onclick = async () => {
+  try {
+    await navigator.clipboard.writeText(inviteLink.value);
+    copyLinkBtn.textContent = "✅ Copied!";
+    setTimeout(() => copyLinkBtn.textContent = "📋 Copy Link", 2000);
+  } catch {
+    alert("Could not copy the link. Please copy it manually.");
+  }
+};
+
+// Close modal
+closeInviteBtn.onclick = () => inviteModal.classList.remove("show");
+inviteModal.onclick = e => { if (e.target === inviteModal) inviteModal.classList.remove("show"); };
+
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyAKUkKJLa1XSV4NwjFBrG2M2g3ObkE5CbI",
+  authDomain: "code-chatroom.firebaseapp.com",
+  projectId: "code-chatroom",
+  storageBucket: "code-chatroom.appspot.com",
+  messagingSenderId: "207673617291",
+  appId: "1:207673617291:web:d25bfef5658e6504acdd8e",
+  databaseURL: "https://code-chatroom-default-rtdb.asia-southeast1.firebasedatabase.app/"
+};
+
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+// Notification sound
+// Sound setup
+const popSound = new Audio("pop.wav");
+popSound.volume = 0.4;
+
+// ✅ Unlock sound once on first user click (browser autoplay policy)
+window.addEventListener("click", () => {
+  popSound.play().catch(() => {}); 
+  popSound.pause();
+  popSound.currentTime = 0;
+}, { once: true });
+
+// ✅ Safer sound play function
+function playPopSound() {
+  if (!soundEnabled) return;
+  const clone = popSound.cloneNode(); // allows overlapping sounds
+  clone.volume = popSound.volume;
+  clone.play().catch(() => {});
+}
+
+
+// Elements
+const setup=document.getElementById("setup");
+const roomInput=document.getElementById("room-input");
+const nameInput=document.getElementById("name-input");
+const joinBtn=document.getElementById("join-btn");
+const genBtn=document.getElementById("gen-btn");
+const roomDisplay=document.getElementById("room-display");
+const roomCodeText=document.getElementById("room-code-text");
+const downloadBtn=document.getElementById("download-btn");
+const messagesEl=document.getElementById("messages");
+const msgInput=document.getElementById("msg-input");
+const sendBtn=document.getElementById("send-btn");
+const instrBtn=document.getElementById("instructions-btn");
+const instructions=document.getElementById("instructions");
+const leaveBtn = document.getElementById("leave-btn");
+const clearBtn = document.getElementById("clear-btn");
+const soundBtn = document.getElementById("sound-btn");
+let soundEnabled = true;
+
+const quickEmojis = [
+  "👋", // red heart
+];
+
+// Toggle instructions
+instrBtn.onclick=()=>{
+  instructions.classList.toggle("open");
+  instrBtn.textContent = instructions.classList.contains("open") ? "Hide Instructions" : "Instructions";
+};
+
+// Render message
+function renderMessage(data) {
+  const msg = document.createElement("p");
+let cls = "message " + (data.name === nickname ? "me" : "other");
+if (data.type === "emoji") cls += " emoji";
+msg.className = cls;
+  const time = data.createdAt ? new Date(data.createdAt).toLocaleString() : "";
+  msg.innerHTML = `<span class="meta">${data.name || "Anon"} · ${time}</span><br> ╰➤ ${data.text}`;
+  messagesEl.appendChild(msg);
+
+  // Auto-scroll to bottom
+// Auto-scroll to the last message smoothly
+setTimeout(() => {
+  messagesEl.scrollTo({
+    top: messagesEl.scrollHeight,
+    behavior: "smooth"
   });
-  copyLinkBtn.onclick = async () => {
-    try {
-      await navigator.clipboard.writeText(inviteLink.value);
-      copyLinkBtn.textContent = "✅ Copied!";
-      setTimeout(() => copyLinkBtn.textContent = "📋 Copy Link", 2000);
-    } catch {
-      alert("Could not copy the link. Please copy it manually.");
-    }
-  };
-  closeInviteBtn.onclick = () => inviteModal.classList.remove("show");
-  inviteModal.onclick = e => { if (e.target === inviteModal) inviteModal.classList.remove("show"); };
+}, 100);
+  
+if (data.name === "📢 System") {
+  const msgDiv = document.createElement("div");
+  msgDiv.classList.add("system-msg");
+  msgDiv.textContent = data.text;
+  messagesDiv.appendChild(msgDiv);
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  return;
+}
 
-  // Firebase config (unchanged)
-  const firebaseConfig = {
-    apiKey: "AIzaSyAKUkKJLa1XSV4NwjFBrG2M2g3ObkE5CbI",
-    authDomain: "code-chatroom.firebaseapp.com",
-    projectId: "code-chatroom",
-    storageBucket: "code-chatroom.appspot.com",
-    messagingSenderId: "207673617291",
-    appId: "1:207673617291:web:d25bfef5658e6504acdd8e",
-    databaseURL: "https://code-chatroom-default-rtdb.asia-southeast1.firebasedatabase.app/"
-  };
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
+}
+function autoScroll() {
+  const nearBottom = messagesEl.scrollHeight - messagesEl.scrollTop - messagesEl.clientHeight < 150;
+  if (nearBottom) {
+    messagesEl.scrollTo({
+      top: messagesEl.scrollHeight,
+      behavior: "smooth"
+    });
+  }
+}
 
-  // Sound
-  const popSound = new Audio("pop.wav");
-  popSound.volume = 0.4;
 
-  // Unlock play on first click (autoplay policy)
-  window.addEventListener("click", () => {
-    popSound.play().catch(() => {});
-    popSound.pause();
+// Join room
+function joinRoom(room) {
+  activeRoom = room;
+  nickname = nameInput.value.trim() || "USER:";
+
+  // Save session
+  localStorage.setItem("chatroom", activeRoom);
+  localStorage.setItem("nickname", nickname);
+
+  messagesEl.innerHTML = "";
+  setup.style.display = "none";
+  roomDisplay.style.display = "flex";
+  roomCodeText.innerHTML = `Room Code: <span>${activeRoom}</span>`;
+  downloadBtn.style.display = "inline-block";
+  msgInput.disabled = false;
+  sendBtn.disabled = false;
+    // Show welcome popup only first time in this room
+  showWelcomeOnce(nickname, activeRoom);
+
+
+  const messagesRef = ref(db, `messages/${activeRoom}`);
+  onChildAdded(messagesRef, (snapshot) => {
+  const data = snapshot.val();
+  renderMessage(data);
+
+  // Post system message: user joined
+const sysRef = push(ref(db, `messages/${activeRoom}`));
+set(sysRef, {
+  name: "📢 System",
+  text: `${nickname} joined the room`,
+  time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+});
+
+  // 🔔 Play sound only for messages from others
+  if (data.name !== nickname && soundEnabled) {
     popSound.currentTime = 0;
-  }, { once: true });
-
-  function playPopSound() {
-    if (!soundEnabled) return;
-    const clone = popSound.cloneNode();
-    clone.volume = popSound.volume;
-    clone.play().catch(() => {});
+    popSound.play().catch(() => {});
   }
-
-  // Elements
-  const setup = document.getElementById("setup");
-  const roomInput = document.getElementById("room-input");
-  const nameInput = document.getElementById("name-input");
-  const joinBtn = document.getElementById("join-btn");
-  const genBtn = document.getElementById("gen-btn");
-  const roomDisplay = document.getElementById("room-display");
-  const roomCodeText = document.getElementById("room-code-text");
-  const downloadBtn = document.getElementById("download-btn");
-  const messagesEl = document.getElementById("messages");
-  const msgInput = document.getElementById("msg-input");
-  const sendBtn = document.getElementById("send-btn");
-  const instrBtn = document.getElementById("instructions-btn");
-  const instructions = document.getElementById("instructions");
-  const leaveBtn = document.getElementById("leave-btn");
-  const clearBtn = document.getElementById("clear-btn");
-  const soundBtn = document.getElementById("sound-btn");
-  // ✅ Stats elements
-const userCountEl = document.getElementById("user-count");
-const msgCountEl = document.getElementById("message-count");
-const roomStartEl = document.getElementById("room-start");
-const roomStatsEl = document.getElementById("room-stats");
-let msgCount = 0;
+});
 
 
-  let soundEnabled = true;
+}
 
-  const quickEmojis = ["👋"];
+joinBtn.onclick=()=>{ if(roomInput.value.trim()) joinRoom(roomInput.value.trim()); };
+genBtn.onclick=()=>{
+  const code=Math.random().toString(36).substring(2,8).toUpperCase();
+  roomInput.value=code; joinRoom(code);
+};
 
-  instrBtn.onclick = () => {
-    instructions.classList.toggle("open");
-    instrBtn.textContent = instructions.classList.contains("open") ? "Hide Instructions" : "Instructions";
-  };
-
-  // Render message function (clean, handles system messages separately)
-  function renderMessage(data) {
-    if (!data) return;
-    // System messages
-    if (data.name === "📢 System") {
-      const sysEl = document.createElement("div");
-      sysEl.classList.add("system-msg");
-      sysEl.textContent = data.text;
-      messagesEl.appendChild(sysEl);
-      messagesEl.scrollTo({ top: messagesEl.scrollHeight, behavior: "smooth" });
-      return;
-    }
-
-    const msg = document.createElement("div");
-    const cls = "message " + (data.name === nickname ? "me" : "other") + (data.type === "emoji" ? " emoji" : "");
-    msg.className = cls;
-    const time = data.createdAt ? new Date(data.createdAt).toLocaleString() : "";
-    const safeText = (data.text || "").toString();
-    msg.innerHTML = `<div class="meta">${(data.name || "Anon")} · ${time}</div><div class="body">╰➤ ${safeText}</div>`;
-    messagesEl.appendChild(msg);
-
-    // Auto-scroll if near bottom
-    const nearBottom = messagesEl.scrollHeight - messagesEl.scrollTop - messagesEl.clientHeight < 150;
-    if (nearBottom) {
-      messagesEl.scrollTo({ top: messagesEl.scrollHeight, behavior: "smooth" });
-    }
-
-    // Play sound for others' messages
-    if (data.name !== nickname && soundEnabled) playPopSound();
+// Restore session if exists
+window.addEventListener("load", () => {
+  const savedRoom = localStorage.getItem("chatroom");
+  const savedName = localStorage.getItem("nickname");
+  if (savedRoom && savedName) {
+    roomInput.value = savedRoom;
+    nameInput.value = savedName;
+    joinRoom(savedRoom);
   }
+});
 
-  // Add message listener
-  function attachListener(room) {
-    if (!room) return;
-    messagesRef = ref(db, `messages/${room}`);
-    childAddedCallback = (snapshot) => {
-      const data = snapshot.val();
-      renderMessage(data);
-    };
-    onChildAdded(messagesRef, childAddedCallback);
+// Send message
+sendBtn.onclick = async () => {
+  if (!msgInput.value.trim()) return;
+  const messagesRef = ref(db, `messages/${activeRoom}`);
+  await push(messagesRef, {
+    name: nickname,
+    text: msgInput.value.trim(),
+    type: "text",
+    createdAt: Date.now()
+  });
+  msgInput.value = "";
+};
+// Double-tap in messages area to send a random emoji
+messagesEl.addEventListener("dblclick", async () => {
+  if (!activeRoom || !nickname) return;
+
+  // Pick a random emoji
+  const emoji = quickEmojis[Math.floor(Math.random() * quickEmojis.length)];
+
+  const messagesRef = ref(db, `messages/${activeRoom}`);
+  await push(messagesRef, {
+    name: nickname,
+    text: emoji,
+    type: "emoji",
+    createdAt: Date.now()
+  });
+});
+
+// Enter = send
+msgInput.addEventListener("keydown", e => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendBtn.click();
   }
+});
 
-  // Remove listener
-  function detachListener() {
-    if (messagesRef && childAddedCallback) {
-      off(messagesRef, "child_added", childAddedCallback);
-      messagesRef = null;
-      childAddedCallback = null;
-    }
-  }
 
-  // Join room (improved)
-  async function joinRoom(room) {
-    activeRoom = room;
-    nickname = nameInput.value.trim() || "USER:";
-    localStorage.setItem("chatroom", activeRoom);
-    localStorage.setItem("nickname", nickname);
+// Download chat
+downloadBtn.onclick=()=>{
+  let chatText=`Chatroom: ${activeRoom}\n====================\n\n`;
+  messagesEl.querySelectorAll(".message").forEach(msg=>{
+    const meta=msg.querySelector(".meta")?.textContent||"";
+    const text=msg.innerText.replace(meta,"").replace(">>>","").trim();
+    chatText+=`${meta}\n${text}\n\n`;
+  });
+  const blob=new Blob([chatText],{type:"text/plain"});
+  const link=document.createElement("a");
+  link.href=URL.createObjectURL(blob);
+  link.download=`chatroom-${activeRoom}.txt`;
+  link.click();
+};
 
+// Clear chat
+clearBtn.onclick = async () => {
+  if (!activeRoom) return;
+  if (confirm("Are you sure you want to clear all messages in this room?")) {
+    const messagesRef = ref(db, `messages/${activeRoom}`);
+    await remove(messagesRef);
     messagesEl.innerHTML = "";
-    setup.style.display = "none";
-    roomDisplay.style.display = "flex";
-    roomStatsEl.style.display = "block"; // show stats bar
-    roomCodeText.innerHTML = `Room Code: <span>${activeRoom}</span>`;
-    downloadBtn.style.display = "inline-block";
-    msgInput.disabled = false;
-    sendBtn.disabled = false;
-
-    // show welcome only first time in this room for this name
-    showWelcomeOnce(nickname, activeRoom);
-
-    // detach any previous listener just in case
-    detachListener();
-
-    // attach new listener
-    attachListener(activeRoom);
-
-    // Post a single "joined" system message (do NOT place inside onChildAdded)
-    try {
-      const sysRef = push(ref(db, `messages/${activeRoom}`));
-      await set(sysRef, {
-        name: "📢 System",
-        text: `${nickname} joined the room`,
-        createdAt: Date.now()
-      });
-    } catch (err) {
-      console.warn("Failed to post join system message:", err);
-    }
-  
   }
-  
+};
 
-  joinBtn.onclick = () => { if (roomInput.value.trim()) joinRoom(roomInput.value.trim()); };
-  genBtn.onclick = () => {
-    const code = Math.random().toString(36).substring(2, 8).toUpperCase();
-    roomInput.value = code; joinRoom(code);
-  };
+// Quit chatroom
+leaveBtn.onclick = () => {
+  localStorage.removeItem("chatroom");
+  localStorage.removeItem("nickname");
+  activeRoom = null;
+  nickname = null;
+  messagesEl.innerHTML = "";
+  setup.style.display = "flex";
+  roomDisplay.style.display = "none";
+  msgInput.disabled = true;
+  sendBtn.disabled = true;
+};
 
-  // restore session if exists
-  window.addEventListener("load", () => {
-    const savedRoom = localStorage.getItem("chatroom");
-    const savedName = localStorage.getItem("nickname");
-    if (savedRoom && savedName) {
-      roomInput.value = savedRoom;
-      nameInput.value = savedName;
-      joinRoom(savedRoom);
-    }
+soundBtn.onclick = () => {
+  soundEnabled = !soundEnabled;
+  soundBtn.textContent = soundEnabled ? "🔊" : "🔇";
+};
+// Post system message: user left
+if (activeRoom && nickname) {
+  const sysRef = push(ref(db, `messages/${activeRoom}`));
+  set(sysRef, {
+    name: "📢 System",
+    text: `${nickname} left the room`,
+    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
   });
-
-  // send message
-  sendBtn.onclick = async () => {
-    if (!msgInput.value.trim() || !activeRoom) return;
-    try {
-      const refToPush = ref(db, `messages/${activeRoom}`);
-      await push(refToPush, {
-        name: nickname,
-        text: msgInput.value.trim(),
-        type: "text",
-        createdAt: Date.now()
-      });
-      msgInput.value = "";
-    } catch (err) {
-      console.error("Failed to send message:", err);
-    }
-  };
-
-  // double-tap messages area => send emoji
-  messagesEl.addEventListener("dblclick", async () => {
-    if (!activeRoom || !nickname) return;
-    const emoji = quickEmojis[Math.floor(Math.random() * quickEmojis.length)];
-    const refToPush = ref(db, `messages/${activeRoom}`);
-    await push(refToPush, {
-      name: nickname,
-      text: emoji,
-      type: "emoji",
-      createdAt: Date.now()
-    });
-  });
-
-  // Enter = send
-  msgInput.addEventListener("keydown", e => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendBtn.click();
-    }
-  });
-
-  // Download chat
-  downloadBtn.onclick = () => {
-    let chatText = `Chatroom: ${activeRoom}\n====================\n\n`;
-    messagesEl.querySelectorAll(".message, .system-msg").forEach(node => {
-      if (node.classList.contains("system-msg")) {
-        chatText += `[SYSTEM] ${node.textContent}\n\n`;
-      } else {
-        const meta = node.querySelector(".meta")?.textContent || "";
-        const body = node.querySelector(".body")?.textContent || node.innerText.replace(meta, "").trim();
-        chatText += `${meta}\n${body}\n\n`;
-      }
-    });
-    const blob = new Blob([chatText], { type: "text/plain" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `chatroom-${activeRoom}.txt`;
-    link.click();
-  };
-
-  // Clear chat (remove from db)
-  clearBtn.onclick = async () => {
-    if (!activeRoom) return;
-    if (confirm("Are you sure you want to clear all messages in this room?")) {
-      try {
-        await remove(ref(db, `messages/${activeRoom}`));
-        messagesEl.innerHTML = "";
-      } catch (err) {
-        console.error("Failed to clear messages:", err);
-      }
-    }
-  };
-
-  // Leave chatroom: remove local state and listener, post left system message
-  leaveBtn.onclick = async () => {
-    if (activeRoom && nickname) {
-      try {
-        const sysRef = push(ref(db, `messages/${activeRoom}`));
-        await set(sysRef, {
-          name: "📢 System",
-          text: `${nickname} left the room`,
-          createdAt: Date.now()
-        });
-      } catch (err) {
-        console.warn("Failed to post leave system message:", err);
-      }
-    }
-    localStorage.removeItem("chatroom");
-    localStorage.removeItem("nickname");
-    activeRoom = null;
-    nickname = null;
-    roomStatsEl.style.display = "none";
-    detachListener();
-    messagesEl.innerHTML = "";
-    setup.style.display = "flex";
-    roomDisplay.style.display = "none";
-    msgInput.disabled = true;
-    sendBtn.disabled = true;
-  };
-
-  // Sound toggle
-  soundBtn.onclick = () => {
-    soundEnabled = !soundEnabled;
-    soundBtn.textContent = soundEnabled ? "🔊" : "🔇";
-  };
-
-  // Post system message on page unload? (optional - not required)
-  window.addEventListener("beforeunload", async () => {
-    // do not try to call Firebase on unload (may be unreliable). leaving out by design.
-  });
-
+}
 </script>
 </body>
 </html>
