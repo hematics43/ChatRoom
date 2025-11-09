@@ -764,55 +764,37 @@ instrBtn.onclick=()=>{
 };
 
 /* ------------------------------
-   TIMESTAMP HELPERS (short)
+   TIMESTAMP HELPER (short absolute)
+   Format: 🕒 HH:MM | D Mon YYYY
    ------------------------------ */
 
-// return short relative like "just now", "3m ago", "1h ago", "yesterday", "3d ago"
-function formatRelativeShort(ts) {
-  if (!ts) return "";
-  const now = Date.now();
-  const diff = Math.floor((now - ts) / 1000); // seconds
-  if (diff < 5) return "just now";
-  if (diff < 60) return `${diff}s ago`;
-  const mins = Math.floor(diff / 60);
-  if (mins < 60) return mins === 1 ? "1m ago" : `${mins}m ago`;
-  const hours = Math.floor(mins / 60);
-  if (hours < 24) return hours === 1 ? "1h ago" : `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  if (days === 1) return "yesterday";
-  return `${days}d ago`;
+function pad2(n){ return n<10? '0'+n : String(n); }
+function shortMonthName(monthIndex) {
+  // JS months 0-11
+  const names = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return names[monthIndex] || '';
 }
-
-// Update all meta timestamps shown in DOM (called every 60s)
-function refreshAllTimestamps() {
-  const metaSpans = messagesEl.querySelectorAll(".meta");
-  metaSpans.forEach(span => {
-    const parent = span.closest(".message");
-    if (!parent) return;
-    const ts = Number(parent.dataset.createdAt) || 0;
-    // meta format: "Name · TIME"
-    const namePart = span.dataset.name || span.textContent.split("·")[0].trim();
-    const rel = formatRelativeShort(ts);
-    span.textContent = `${namePart} · ${rel}`;
-  });
+function formatShortAbsolute(ts) {
+  const d = new Date(Number(ts) || Date.now());
+  const hh = pad2(d.getHours());
+  const mm = pad2(d.getMinutes());
+  const day = d.getDate();
+  const mon = shortMonthName(d.getMonth());
+  const year = d.getFullYear();
+  return `🕒 ${hh}:${mm} | ${day} ${mon} ${year}`;
 }
-
-// run updater every 60s
-setInterval(refreshAllTimestamps, 60 * 1000);
 
 /* ------------------------------
    RENDER MESSAGE (preserves system style)
    ------------------------------ */
 
 function renderMessage(data) {
-  // If system message, render centered system message
+  // System message
   if (data && data.name === "📢 System") {
     const msgDiv = document.createElement("div");
     msgDiv.classList.add("system-msg");
-    // show relative time optionally at end
     const ts = data.createdAt || data.time || Date.now();
-    const rel = formatRelativeShort(Number(ts) || Date.now());
-    msgDiv.textContent = `${data.text} · ${rel}`;
+    msgDiv.textContent = `${data.text} · ${formatShortAbsolute(ts)}`;
     messagesEl.appendChild(msgDiv);
     // auto-scroll
     setTimeout(() => {
@@ -826,17 +808,17 @@ function renderMessage(data) {
   if (data.type === "emoji") cls += " emoji";
   msg.className = cls;
 
-  // attach timestamp for live updating
+  // attach timestamp for potential later use
   const ts = data.createdAt ? Number(data.createdAt) : Date.now();
   msg.dataset.createdAt = ts;
 
-  // build meta span and store name in data-name for refresh helper
+  // meta span with short absolute timestamp
   const metaSpan = document.createElement("span");
   metaSpan.className = "meta";
-  metaSpan.dataset.name = data.name || "Anon";
-  metaSpan.textContent = `${data.name || "Anon"} · ${formatRelativeShort(ts)}`;
+  const displayName = data.name || "Anon";
+  metaSpan.textContent = `${displayName} · ${formatShortAbsolute(ts)}`;
 
-  // create message content
+  // message content
   const content = document.createElement("div");
   content.className = "content";
   content.innerHTML = `╰➤ ${escapeHtml(String(data.text || ""))}`;
@@ -888,7 +870,12 @@ function autoScroll() {
    JOIN ROOM / LISTENERS
    ------------------------------ */
 
-function joinRoom(room) {
+/*
+  joinRoom(room, opts)
+  opts.announce (boolean) - when true, post system join message to DB
+  When restoring session on load we use announce:false so refresh won't post join
+*/
+function joinRoom(room, opts = { announce: true }) {
   activeRoom = room;
   nickname = nameInput.value.trim() || "USER:";
 
@@ -906,7 +893,7 @@ function joinRoom(room) {
     // Show welcome popup only first time in this room
   showWelcomeOnce(nickname, activeRoom);
 
-  // Listen for messages for this room
+  // Listen for messages for this room (render only)
   const messagesRef = ref(db, `messages/${activeRoom}`);
   onChildAdded(messagesRef, (snapshot) => {
     const data = snapshot.val();
@@ -914,34 +901,36 @@ function joinRoom(room) {
     renderMessage(data);
   });
 
-  // Post system message once: user joined
-  try {
-    const sysRef = push(ref(db, `messages/${activeRoom}`));
-    set(sysRef, {
-      name: "📢 System",
-      text: `${nickname} joined the room`,
-      createdAt: Date.now()
-    });
-  } catch (e) {
-    // non-fatal: fail silently if DB permission prevents system messages
-    console.warn("Could not post system join message:", e);
+  // Post system message once: user joined (only if announce true)
+  if (opts && opts.announce) {
+    try {
+      const sysRef = push(ref(db, `messages/${activeRoom}`));
+      set(sysRef, {
+        name: "📢 System",
+        text: `${nickname} joined the room`,
+        createdAt: Date.now()
+      });
+    } catch (e) {
+      console.warn("Could not post system join message:", e);
+    }
   }
 }
 
-joinBtn.onclick=()=>{ if(roomInput.value.trim()) joinRoom(roomInput.value.trim()); };
+joinBtn.onclick=()=>{ if(roomInput.value.trim()) joinRoom(roomInput.value.trim(), { announce: true }); };
 genBtn.onclick=()=>{
   const code=Math.random().toString(36).substring(2,8).toUpperCase();
-  roomInput.value=code; joinRoom(code);
+  roomInput.value=code; joinRoom(code, { announce: true });
 };
 
-// Restore session if exists
+// Restore session if exists (auto-join without announcing)
 window.addEventListener("load", () => {
   const savedRoom = localStorage.getItem("chatroom");
   const savedName = localStorage.getItem("nickname");
   if (savedRoom && savedName) {
     roomInput.value = savedRoom;
     nameInput.value = savedName;
-    joinRoom(savedRoom);
+    // auto-restore without posting join system message
+    joinRoom(savedRoom, { announce: false });
   }
 });
 
@@ -1022,16 +1011,18 @@ clearBtn.onclick = async () => {
 
 // Quit chatroom
 leaveBtn.onclick = () => {
-  // Post system message: user left (attempt, may fail depending on DB rules)
-  try {
-    const sysRef = push(ref(db, `messages/${activeRoom}`));
-    set(sysRef, {
-      name: "📢 System",
-      text: `${nickname} left the room`,
-      createdAt: Date.now()
-    });
-  } catch (e) {
-    console.warn("Could not post system leave message:", e);
+  if (activeRoom && nickname) {
+    // Post system message: user left (only once on explicit leave)
+    try {
+      const sysRef = push(ref(db, `messages/${activeRoom}`));
+      set(sysRef, {
+        name: "📢 System",
+        text: `${nickname} left the room`,
+        createdAt: Date.now()
+      });
+    } catch (e) {
+      console.warn("Could not post system leave message:", e);
+    }
   }
 
   localStorage.removeItem("chatroom");
