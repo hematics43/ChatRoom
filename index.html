@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -335,7 +334,7 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     font-size: 0.9em;
   }
 }
-/* Invite Modal Styles */
+*/* Invite Modal Styles */
 .invite-modal {
   position: fixed;
   top: 0; left: 0;
@@ -636,7 +635,7 @@ box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import { getDatabase, ref, push, onChildAdded, remove } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+import { getDatabase, ref, push, onChildAdded, remove, set } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
 const inviteBtn = document.getElementById("invite-btn");
 const inviteModal = document.getElementById("invite-modal");
 const inviteRoomCode = document.getElementById("invite-room-code");
@@ -764,35 +763,117 @@ instrBtn.onclick=()=>{
   instrBtn.textContent = instructions.classList.contains("open") ? "Hide Instructions" : "Instructions";
 };
 
-// Render message
+/* ------------------------------
+   TIMESTAMP HELPERS (short)
+   ------------------------------ */
+
+// return short relative like "just now", "3m ago", "1h ago", "yesterday", "3d ago"
+function formatRelativeShort(ts) {
+  if (!ts) return "";
+  const now = Date.now();
+  const diff = Math.floor((now - ts) / 1000); // seconds
+  if (diff < 5) return "just now";
+  if (diff < 60) return `${diff}s ago`;
+  const mins = Math.floor(diff / 60);
+  if (mins < 60) return mins === 1 ? "1m ago" : `${mins}m ago`;
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return hours === 1 ? "1h ago" : `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  if (days === 1) return "yesterday";
+  return `${days}d ago`;
+}
+
+// Update all meta timestamps shown in DOM (called every 60s)
+function refreshAllTimestamps() {
+  const metaSpans = messagesEl.querySelectorAll(".meta");
+  metaSpans.forEach(span => {
+    const parent = span.closest(".message");
+    if (!parent) return;
+    const ts = Number(parent.dataset.createdAt) || 0;
+    // meta format: "Name · TIME"
+    const namePart = span.dataset.name || span.textContent.split("·")[0].trim();
+    const rel = formatRelativeShort(ts);
+    span.textContent = `${namePart} · ${rel}`;
+  });
+}
+
+// run updater every 60s
+setInterval(refreshAllTimestamps, 60 * 1000);
+
+/* ------------------------------
+   RENDER MESSAGE (preserves system style)
+   ------------------------------ */
+
 function renderMessage(data) {
+  // If system message, render centered system message
+  if (data && data.name === "📢 System") {
+    const msgDiv = document.createElement("div");
+    msgDiv.classList.add("system-msg");
+    // show relative time optionally at end
+    const ts = data.createdAt || data.time || Date.now();
+    const rel = formatRelativeShort(Number(ts) || Date.now());
+    msgDiv.textContent = `${data.text} · ${rel}`;
+    messagesEl.appendChild(msgDiv);
+    // auto-scroll
+    setTimeout(() => {
+      messagesEl.scrollTo({ top: messagesEl.scrollHeight, behavior: "smooth" });
+    }, 100);
+    return;
+  }
+
   const msg = document.createElement("p");
-let cls = "message " + (data.name === nickname ? "me" : "other");
-if (data.type === "emoji") cls += " emoji";
-msg.className = cls;
-  const time = data.createdAt ? new Date(data.createdAt).toLocaleString() : "";
-  msg.innerHTML = `<span class="meta">${data.name || "Anon"} · ${time}</span><br> ╰➤ ${data.text}`;
+  let cls = "message " + (data.name === nickname ? "me" : "other");
+  if (data.type === "emoji") cls += " emoji";
+  msg.className = cls;
+
+  // attach timestamp for live updating
+  const ts = data.createdAt ? Number(data.createdAt) : Date.now();
+  msg.dataset.createdAt = ts;
+
+  // build meta span and store name in data-name for refresh helper
+  const metaSpan = document.createElement("span");
+  metaSpan.className = "meta";
+  metaSpan.dataset.name = data.name || "Anon";
+  metaSpan.textContent = `${data.name || "Anon"} · ${formatRelativeShort(ts)}`;
+
+  // create message content
+  const content = document.createElement("div");
+  content.className = "content";
+  content.innerHTML = `╰➤ ${escapeHtml(String(data.text || ""))}`;
+
+  msg.appendChild(metaSpan);
+  msg.appendChild(document.createElement("br"));
+  msg.appendChild(content);
+
   messagesEl.appendChild(msg);
 
   // Auto-scroll to bottom
-// Auto-scroll to the last message smoothly
-setTimeout(() => {
-  messagesEl.scrollTo({
-    top: messagesEl.scrollHeight,
-    behavior: "smooth"
-  });
-}, 100);
-  
-if (data.name === "📢 System") {
-  const msgDiv = document.createElement("div");
-  msgDiv.classList.add("system-msg");
-  msgDiv.textContent = data.text;
-  messagesDiv.appendChild(msgDiv);
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
-  return;
+  setTimeout(() => {
+    messagesEl.scrollTo({
+      top: messagesEl.scrollHeight,
+      behavior: "smooth"
+    });
+  }, 100);
+
+  // Play sound only for messages from others
+  if (data.name !== nickname && soundEnabled) {
+    playPopSound();
+  }
 }
 
+// small HTML escape to avoid accidental HTML injection in messages
+function escapeHtml(unsafe) {
+  return unsafe
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
+
+/* ------------------------------
+   AUTO-SCROLL helper (unused but preserved)
+   ------------------------------ */
 function autoScroll() {
   const nearBottom = messagesEl.scrollHeight - messagesEl.scrollTop - messagesEl.clientHeight < 150;
   if (nearBottom) {
@@ -803,8 +884,10 @@ function autoScroll() {
   }
 }
 
+/* ------------------------------
+   JOIN ROOM / LISTENERS
+   ------------------------------ */
 
-// Join room
 function joinRoom(room) {
   activeRoom = room;
   nickname = nameInput.value.trim() || "USER:";
@@ -823,28 +906,26 @@ function joinRoom(room) {
     // Show welcome popup only first time in this room
   showWelcomeOnce(nickname, activeRoom);
 
-
+  // Listen for messages for this room
   const messagesRef = ref(db, `messages/${activeRoom}`);
   onChildAdded(messagesRef, (snapshot) => {
-  const data = snapshot.val();
-  renderMessage(data);
+    const data = snapshot.val();
+    if (!data) return;
+    renderMessage(data);
+  });
 
-  // Post system message: user joined
-const sysRef = push(ref(db, `messages/${activeRoom}`));
-set(sysRef, {
-  name: "📢 System",
-  text: `${nickname} joined the room`,
-  time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-});
-
-  // 🔔 Play sound only for messages from others
-  if (data.name !== nickname && soundEnabled) {
-    popSound.currentTime = 0;
-    popSound.play().catch(() => {});
+  // Post system message once: user joined
+  try {
+    const sysRef = push(ref(db, `messages/${activeRoom}`));
+    set(sysRef, {
+      name: "📢 System",
+      text: `${nickname} joined the room`,
+      createdAt: Date.now()
+    });
+  } catch (e) {
+    // non-fatal: fail silently if DB permission prevents system messages
+    console.warn("Could not post system join message:", e);
   }
-});
-
-
 }
 
 joinBtn.onclick=()=>{ if(roomInput.value.trim()) joinRoom(roomInput.value.trim()); };
@@ -863,6 +944,10 @@ window.addEventListener("load", () => {
     joinRoom(savedRoom);
   }
 });
+
+/* ------------------------------
+   SENDING MESSAGES
+   ------------------------------ */
 
 // Send message
 sendBtn.onclick = async () => {
@@ -901,13 +986,22 @@ msgInput.addEventListener("keydown", e => {
 });
 
 
+/* ------------------------------
+   DOWNLOAD / CLEAR / LEAVE
+   ------------------------------ */
+
 // Download chat
 downloadBtn.onclick=()=>{
   let chatText=`Chatroom: ${activeRoom}\n====================\n\n`;
-  messagesEl.querySelectorAll(".message").forEach(msg=>{
-    const meta=msg.querySelector(".meta")?.textContent||"";
-    const text=msg.innerText.replace(meta,"").replace(">>>","").trim();
-    chatText+=`${meta}\n${text}\n\n`;
+  messagesEl.querySelectorAll(".message, .system-msg").forEach(msg=>{
+    if (msg.classList.contains("system-msg")) {
+      chatText += `${msg.textContent}\n\n`;
+    } else {
+      const meta = msg.querySelector(".meta")?.textContent||"";
+      // Remove meta from full text
+      const text = msg.innerText.replace(meta,"").replace(">>>","").trim();
+      chatText+=`${meta}\n${text}\n\n`;
+    }
   });
   const blob=new Blob([chatText],{type:"text/plain"});
   const link=document.createElement("a");
@@ -928,6 +1022,18 @@ clearBtn.onclick = async () => {
 
 // Quit chatroom
 leaveBtn.onclick = () => {
+  // Post system message: user left (attempt, may fail depending on DB rules)
+  try {
+    const sysRef = push(ref(db, `messages/${activeRoom}`));
+    set(sysRef, {
+      name: "📢 System",
+      text: `${nickname} left the room`,
+      createdAt: Date.now()
+    });
+  } catch (e) {
+    console.warn("Could not post system leave message:", e);
+  }
+
   localStorage.removeItem("chatroom");
   localStorage.removeItem("nickname");
   activeRoom = null;
@@ -939,19 +1045,11 @@ leaveBtn.onclick = () => {
   sendBtn.disabled = true;
 };
 
+// Sound toggle
 soundBtn.onclick = () => {
   soundEnabled = !soundEnabled;
   soundBtn.textContent = soundEnabled ? "🔊" : "🔇";
 };
-// Post system message: user left
-if (activeRoom && nickname) {
-  const sysRef = push(ref(db, `messages/${activeRoom}`));
-  set(sysRef, {
-    name: "📢 System",
-    text: `${nickname} left the room`,
-    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-  });
-}
 </script>
 </body>
 </html>
